@@ -1,0 +1,9 @@
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextArea?>
+<VBox fx:controller="ui.GameBoardController" xmlns:fx="http://javafx.com/fxml" alignment="center" >
+    <GridPane fx:id="boggleGrid"/>
+    <TextField fx:id="textEnter" />
+    <TextArea editable="false" fx:id="enteredWords" />
+</VBox>
