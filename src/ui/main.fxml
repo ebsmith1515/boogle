@@ -1,0 +1,5 @@
+<?import javafx.scene.layout.StackPane?>
+<StackPane fx:controller="ui.MainController" xmlns:fx="http://javafx.com/fxml" alignment="center" >
+    <fx:include fx:id="startGame" source="startGame.fxml" />
+    <fx:include fx:id="gameBoard" visible="false" source="gameBoard.fxml" />
+</StackPane>

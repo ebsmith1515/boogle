@@ -2,18 +2,19 @@ package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-/**
- * Created by esmith on 4/5/15.
- */
 public class BoggleServer extends Thread {
 
 	public static final int PORT = 9191;
 	boolean waitingForPlayers = true;
 
-	List<Player> players = new ArrayList<Player>();
+	private ObservableList<Player> players = FXCollections.observableArrayList();
+
+	public enum Commands {
+		START
+	}
 
 	@Override
 	public void run() {
@@ -27,6 +28,21 @@ public class BoggleServer extends Thread {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+
+	public ObservableList<Player> getPlayers() {
+		return players;
+	}
+
+	public void startGame() {
+		broadcast(Commands.START.toString());
+	}
+
+	public void broadcast(String message) {
+		for (Player player : players) {
+			player.send(message);
 		}
 	}
 }

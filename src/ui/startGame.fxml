@@ -1,0 +1,12 @@
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<VBox fx:controller="ui.StartGameController" xmlns:fx="http://javafx.com/fxml" alignment="center" >
+    <Label>Start Game</Label>
+    <Button fx:id="startButton" onAction="#initServer">Start new Game</Button>
+    <Button fx:id="joinButton" onAction="#joinGame">Join Game</Button>
+    <TextField fx:id="ipfield" />
+    <Label visible="false" fx:id="numPlayers" />
+    <fx:include fx:id="message" source="messagePanel.fxml" />
+</VBox>

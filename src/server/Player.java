@@ -22,16 +22,19 @@ public class Player extends Thread {
 		}
 	}
 
+	public void send(String message) {
+		output.println(message);
+	}
+
 	@Override
 	public void run() {
 		System.out.println("Starting player thread.");
 		try {
 			while (true) {
-					String line = input.readLine();
-					if (line.startsWith("PING")) {
-						output.println("WELCOME");
-						output.flush();
-					}
+				String line = input.readLine();
+				if (line.startsWith("PING")) {
+					output.println("WELCOME");
+				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
