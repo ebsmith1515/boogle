@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.CardLayout;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -9,23 +10,15 @@ import javafx.scene.layout.VBox;
 /**
  * Created by esmith on 4/6/15.
  */
-public class MainController	implements Initializable {
-	@FXML
-	private VBox gameBoard;
-	@FXML
-	private VBox startGame;
-	@FXML
-	private GameBoardController gameBoardController;
-	@FXML
-	private StartGameController startGameController;
+public class MainController {
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		startGameController.setMainController(this);
+	protected MainWindow mainWindow;
+
+	public MainController() {
+		mainWindow = new MainWindow(this);
 	}
 
 	public void showGameBoard() {
-		startGame.setVisible(false);
-		gameBoard.setVisible(true);
+		((CardLayout)mainWindow.getLayout()).show(mainWindow, "GameBoard");
 	}
 }

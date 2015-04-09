@@ -1,44 +1,42 @@
 package ui;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
-public class GameBoardController implements Initializable {
+public class GameBoardController {
 
-	public TextField textEnter;
-	public TextArea enteredWords;
-	public GridPane boggleGrid;
+	protected GameBoard gameBoard;
 
 	public static final int BOARD_SIZE = 4;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		testData();
-	}
-
-	private void testData() {
-		for (int i=0; i < BOARD_SIZE; i++) {
-			for (int j=0; j < BOARD_SIZE; j++) {
-				boggleGrid.add(letterImage(), i, j);
-			}
-		}
-
-		addWord("hello");
-		addWord("world");
+	public GameBoardController() {
+		gameBoard = new GameBoard(this);
+		addLetters();
 	}
 
 	private void addWord(String word) {
-		enteredWords.appendText(word + "\n");
+		gameBoard.enteredWords.append(word + "\n");
 	}
 
-	private TextArea letterImage() {
-		TextArea textArea = new TextArea("A");
-		textArea.setEditable(false);
-		textArea.setPrefSize(30, 30);
-		return textArea;
+	private void addLetters() {
+		for (int i=0; i < BOARD_SIZE; i++) {
+			for (int j=0; j < BOARD_SIZE; j++) {
+				gameBoard.letterGrid.add(letterLabel(getLetter()));
+			}
+		}
+	}
+
+	private JLabel letterLabel(String letter) {
+		JLabel label = new JLabel(letter);
+		label.setBorder(new LineBorder(Color.BLACK));
+		label.setHorizontalTextPosition(SwingConstants.CENTER);
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		return label;
+	}
+
+	private String getLetter() {
+		return "A";
 	}
 }

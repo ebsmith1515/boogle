@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import javafx.application.Platform;
+import javax.swing.SwingUtilities;
 import server.BoggleServer;
 import ui.MainController;
 
@@ -26,7 +26,7 @@ public class BoggleClient extends Thread {
 				String line = in.readLine();
 				if (line.equals(BoggleServer.Commands.START.toString())) {
 					System.out.println("Received START from server.");
-					Platform.runLater(new Runnable() {
+					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
 							mainController.showGameBoard();

@@ -1,45 +1,35 @@
 package ui;
 
 import client.BoggleClient;
-import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javax.swing.SwingUtilities;
 import server.BoggleServer;
-import server.Player;
 
 public class StartGameController {
-
-	@FXML
-	private Button startButton;
-	@FXML
-	private Button joinButton;
-	@FXML
-	private Label numPlayers;
-	@FXML
-	private TextField ipfield;
 
 	private BoggleServer server;
 	private BoggleClient client;
 	private MainController mainController;
 
-	@FXML
-	private MessageController messageController;
+
+	protected StartGame startGame;
+
+	public StartGameController(MainController mainController) {
+		startGame = new StartGame(this);
+		this.mainController = mainController;
+	}
 
 	public void joinGame() {
 		client = new BoggleClient(mainController);
 		String ipAddress = null;
-		if (!ipfield.getText().isEmpty()) {
-			ipAddress = ipfield.getText();
+		if (!startGame.ipField.getText().isEmpty()) {
+			ipAddress = startGame.ipField.getText();
 		}
 		if (client.connect(ipAddress)) {
-			joinButton.setDisable(true);
-			startButton.setDisable(true);
+			startGame.joinButton.setEnabled(false);
+			startGame.startButton.setEnabled(false);
 			client.start();
 		} else {
-			messageController.message("Connection refused. Try again.", MessageController.Duration.SHORT);
+			startGame.message.setText("Connection refused. Try again.");
 		}
 	}
 
@@ -48,32 +38,26 @@ public class StartGameController {
 			startGame();
 			return;
 		}
-		server = new BoggleServer();
+		server = new BoggleServer(this);
 		server.start();
-		numPlayers.setVisible(true);
-		messageController.message("Waiting for others. Click start again to begin.", MessageController.Duration.LONG);
+		startGame.numPlayers.setVisible(true);
+		startGame.message.setText("Waiting for others. Click start again to begin.");
 
-		server.getPlayers().addListener(new ListChangeListener<Player>() {
+		joinGame();
+		startGame.startButton.setEnabled(true);
+	}
+
+	public void updateNumPlayers(final int playerCount) {
+		SwingUtilities.invokeLater(new Runnable() {
 			@Override
-			public void onChanged(Change<? extends Player> c) {
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						numPlayers.setText("Number of Players: " + server.getPlayers().size());
-					}
-				});
+			public void run() {
+				startGame.numPlayers.setText("Number of Players: " + playerCount);
 			}
 		});
-		joinGame();
-		startButton.setDisable(false);
 	}
 
 	private void startGame() {
-		messageController.message("Starting game...", MessageController.Duration.SHORT);
+		startGame.message.setText("Starting game...");
 		server.startGame();
-	}
-
-	public void setMainController(MainController mainController) {
-		this.mainController = mainController;
 	}
 }

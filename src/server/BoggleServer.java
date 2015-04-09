@@ -2,18 +2,24 @@ package server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.ArrayList;
+import java.util.List;
+import ui.StartGameController;
 
 public class BoggleServer extends Thread {
 
 	public static final int PORT = 9191;
 	boolean waitingForPlayers = true;
 
-	private ObservableList<Player> players = FXCollections.observableArrayList();
+	private List<Player> players = new ArrayList<Player>();
+	protected StartGameController startGameController;
 
 	public enum Commands {
 		START
+	}
+
+	public BoggleServer(StartGameController startGameController) {
+		this.startGameController = startGameController;
 	}
 
 	@Override
@@ -23,7 +29,7 @@ public class BoggleServer extends Thread {
 			while (waitingForPlayers) {
 				Player player = new Player(listener.accept());
 				player.start();
-				players.add(player);
+				addPlayer(player);
 				System.out.println("Adding new player");
 			}
 		} catch (IOException e) {
@@ -31,8 +37,12 @@ public class BoggleServer extends Thread {
 		}
 	}
 
+	public void addPlayer(Player player) {
+		players.add(player);
+		startGameController.updateNumPlayers(players.size());
+	}
 
-	public ObservableList<Player> getPlayers() {
+	public List<Player> getPlayers() {
 		return players;
 	}
 

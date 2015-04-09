@@ -1,22 +1,14 @@
 package ui;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javax.swing.JFrame;
 
-public class Main extends Application {
-
-    @Override
-    public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-        primaryStage.setTitle("Boggle");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
-    }
+public class Main {
 
     public static void main(String[] args) {
-        launch(args);
+        JFrame frame = new JFrame();
+		frame.setSize(400, 400);
+		MainWindow mainWindow = new MainController().mainWindow;
+		frame.setContentPane(mainWindow);
+		frame.setVisible(true);
     }
 }
