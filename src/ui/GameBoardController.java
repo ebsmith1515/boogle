@@ -41,6 +41,10 @@ public class GameBoardController {
 		});
 	}
 
+	protected void endGame() {
+		mainController.client.sendWords(enteredWords);
+	}
+
 	protected void startTimer(int gameSeconds) {
 		final long period = 500;
 		timeLeft = gameSeconds * 1000;
@@ -88,6 +92,7 @@ public class GameBoardController {
 			timeLeft -= period;
 			if (timeLeft <=0) {
 				gameBoard.timer.setText("Finished!");
+				endGame();
 				this.cancel();
 			} else {
 				SwingUtilities.invokeLater(new Runnable() {

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import javax.swing.SwingUtilities;
 import server.BoggleServer;
 import ui.MainController;
@@ -61,6 +62,14 @@ public class BoggleClient extends Thread {
 			e.printStackTrace();
 		}
 		return success;
+	}
+
+	public void sendWords(List<String> words) {
+		String wordsCommand = BoggleServer.Commands.WORDS.toString();
+		for(String word : words) {
+			wordsCommand += BoggleServer.CMD_DELIM + word;
+		}
+		out.println(wordsCommand);
 	}
 
 	public void pingServer() {

@@ -7,9 +7,7 @@ import server.BoggleServer;
 public class StartGameController {
 
 	private BoggleServer server;
-	private BoggleClient client;
 	private MainController mainController;
-
 
 	protected StartGame startGame;
 
@@ -19,15 +17,15 @@ public class StartGameController {
 	}
 
 	public void joinGame() {
-		client = new BoggleClient(mainController);
+		mainController.client = new BoggleClient(mainController);
 		String ipAddress = null;
 		if (!startGame.ipField.getText().isEmpty()) {
 			ipAddress = startGame.ipField.getText();
 		}
-		if (client.connect(ipAddress)) {
+		if (mainController.client.connect(ipAddress)) {
 			startGame.joinButton.setEnabled(false);
 			startGame.startButton.setEnabled(false);
-			client.start();
+			mainController.client.start();
 		} else {
 			startGame.message.setText("Connection refused. Try again.");
 		}

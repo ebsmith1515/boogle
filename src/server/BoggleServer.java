@@ -15,9 +15,10 @@ public class BoggleServer extends Thread {
 
 	private List<Player> players = new ArrayList<Player>();
 	protected StartGameController startGameController;
+	private Results results;
 
 	public enum Commands {
-		START
+		START,WORDS
 	}
 
 	public BoggleServer(StartGameController startGameController) {
@@ -29,7 +30,7 @@ public class BoggleServer extends Thread {
 		try {
 			ServerSocket listener = new ServerSocket(PORT);
 			while (waitingForPlayers) {
-				Player player = new Player(listener.accept());
+				Player player = new Player(listener.accept(), this);
 				player.start();
 				addPlayer(player);
 				System.out.println("Adding new player");
@@ -55,6 +56,19 @@ public class BoggleServer extends Thread {
 	public void broadcast(String message) {
 		for (Player player : players) {
 			player.send(message);
+		}
+	}
+
+	public void checkEnd() {
+		boolean allDone = true;
+		for (Player player : players) {
+			if (player.getEnteredWords() == null) {
+				allDone = false;
+				break;
+			}
+		}
+		if (allDone) {
+			System.out.println("All done");
 		}
 	}
 }
