@@ -24,14 +24,21 @@ public class BoggleClient extends Thread {
 		try {
 			while (true) {
 				String line = in.readLine();
-				if (line.equals(BoggleServer.Commands.START.toString())) {
+				if (line.startsWith(BoggleServer.Commands.START.toString())) {
 					System.out.println("Received START from server.");
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							mainController.showGameBoard();
-						}
-					});
+					String timeString = line.split(BoggleServer.CMD_DELIM)[1];
+					final int gameSeconds;
+					try {
+						gameSeconds = Integer.parseInt(timeString);
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								mainController.showGameBoard(gameSeconds);
+							}
+						});
+					} catch (NumberFormatException ex) {
+						System.out.println("Could not parse to int: " + timeString);
+					}
 				}
 			}
 		} catch (IOException ex) {

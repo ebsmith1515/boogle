@@ -9,7 +9,9 @@ import ui.StartGameController;
 public class BoggleServer extends Thread {
 
 	public static final int PORT = 9191;
+	private static final int GAME_SECONDS = 10;
 	boolean waitingForPlayers = true;
+	public static final String CMD_DELIM = " ";
 
 	private List<Player> players = new ArrayList<Player>();
 	protected StartGameController startGameController;
@@ -47,7 +49,7 @@ public class BoggleServer extends Thread {
 	}
 
 	public void startGame() {
-		broadcast(Commands.START.toString());
+		broadcast(Commands.START.toString() + CMD_DELIM + GAME_SECONDS);
 	}
 
 	public void broadcast(String message) {

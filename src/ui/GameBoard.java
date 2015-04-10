@@ -2,9 +2,9 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -20,7 +20,8 @@ public class GameBoard extends JPanel {
 	protected JPanel letterGridContainer;
 	protected JPanel letterGrid;
 	protected JTextField wordEnter;
-	protected JTextArea enteredWords;
+	protected JTextArea enteredWordsArea;
+	protected JLabel timer;
 
 	public GameBoard(GameBoardController gameBoardController) {
 		this.gameBoardController = gameBoardController;
@@ -29,9 +30,10 @@ public class GameBoard extends JPanel {
 
 	private void initLayout() {
 		wordEnter = new JTextField();
-		enteredWords = new JTextArea();
-		enteredWords.setPreferredSize(new Dimension(600, 600));
+		enteredWordsArea = new JTextArea();
+		enteredWordsArea.setPreferredSize(new Dimension(600, 600));
 		letterGrid = new JPanel();
+		timer = new JLabel();
 		letterGridContainer = new JPanel();
 		letterGrid.setLayout(new GridLayout(BOARD_SIZE, BOARD_SIZE));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -39,11 +41,9 @@ public class GameBoard extends JPanel {
 		letterGridContainer.setMaximumSize(new Dimension(100, 100));
 		letterGridContainer.add(letterGrid, BorderLayout.CENTER);
 		add(letterGridContainer);
+		add(timer);
 		add(wordEnter);
-		add(enteredWords);
+		add(enteredWordsArea);
 	}
 
-	public GameBoardController getGameBoardController() {
-		return gameBoardController;
-	}
 }

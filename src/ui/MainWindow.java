@@ -11,8 +11,8 @@ public class MainWindow extends JPanel {
 	StartGame startGame;
 
 	public MainWindow(MainController mainController) {
-		gameBoard = new GameBoardController().gameBoard;
-		startGame = new StartGameController(mainController).startGame;
+		gameBoard = mainController.gameBoardController.gameBoard;
+		startGame = mainController.startGameController.startGame;
 		setLayout(new CardLayout());
 		add(startGame, "StartGame");
 		add(gameBoard, "GameBoard");
