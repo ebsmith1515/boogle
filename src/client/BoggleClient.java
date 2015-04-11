@@ -8,6 +8,9 @@ import java.net.Socket;
 import java.util.List;
 import javax.swing.SwingUtilities;
 import server.BoggleServer;
+import static server.BoggleServer.CMD_DELIM;
+import static server.BoggleServer.Commands.*;
+import server.Results;
 import ui.MainController;
 
 public class BoggleClient extends Thread {
@@ -25,9 +28,9 @@ public class BoggleClient extends Thread {
 		try {
 			while (true) {
 				String line = in.readLine();
-				if (line.startsWith(BoggleServer.Commands.START.toString())) {
+				if (line.startsWith(START.toString())) {
 					System.out.println("Received START from server.");
-					String timeString = line.split(BoggleServer.CMD_DELIM)[1];
+					String timeString = line.split(CMD_DELIM)[1];
 					final int gameSeconds;
 					try {
 						gameSeconds = Integer.parseInt(timeString);
@@ -40,6 +43,10 @@ public class BoggleClient extends Thread {
 					} catch (NumberFormatException ex) {
 						System.out.println("Could not parse to int: " + timeString);
 					}
+				} else if (line.startsWith(RESULTS.toString())) {
+					String resultsStr = line.split(CMD_DELIM)[1];
+					Results results = new Results(resultsStr);
+					mainController.showResults(results);
 				}
 			}
 		} catch (IOException ex) {
@@ -65,9 +72,9 @@ public class BoggleClient extends Thread {
 	}
 
 	public void sendWords(List<String> words) {
-		String wordsCommand = BoggleServer.Commands.WORDS.toString();
+		String wordsCommand = WORDS.toString();
 		for(String word : words) {
-			wordsCommand += BoggleServer.CMD_DELIM + word;
+			wordsCommand += CMD_DELIM + word;
 		}
 		out.println(wordsCommand);
 	}

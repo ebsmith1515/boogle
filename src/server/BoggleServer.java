@@ -18,7 +18,11 @@ public class BoggleServer extends Thread {
 	private Results results;
 
 	public enum Commands {
-		START,WORDS
+		START,WORDS,RESULTS
+	}
+
+	public BoggleServer() {
+
 	}
 
 	public BoggleServer(StartGameController startGameController) {
@@ -29,8 +33,9 @@ public class BoggleServer extends Thread {
 	public void run() {
 		try {
 			ServerSocket listener = new ServerSocket(PORT);
+			int playerNum = 1;
 			while (waitingForPlayers) {
-				Player player = new Player(listener.accept(), this);
+				Player player = new Player(listener.accept(), this, playerNum++);
 				player.start();
 				addPlayer(player);
 				System.out.println("Adding new player");
@@ -59,7 +64,8 @@ public class BoggleServer extends Thread {
 		}
 	}
 
-	public void checkEnd() {
+	private boolean sentResults = false;
+	public synchronized void checkEnd() {
 		boolean allDone = true;
 		for (Player player : players) {
 			if (player.getEnteredWords() == null) {
@@ -67,8 +73,24 @@ public class BoggleServer extends Thread {
 				break;
 			}
 		}
-		if (allDone) {
-			System.out.println("All done");
+		if (allDone && !sentResults) {
+			System.out.println("All done, sending results");
+			sentResults = true;
+			results = new Results(players);
+			for (Player player : players) {
+				for (String word : player.getEnteredWords()) {
+					results.addResult(player.getPlayerName(), word);
+				}
+			}
+			sendResults();
 		}
+	}
+
+	private void sendResults() {
+		broadcast(Commands.RESULTS + CMD_DELIM + results.serialize());
+	}
+
+	public Results getResults() {
+		return results;
 	}
 }

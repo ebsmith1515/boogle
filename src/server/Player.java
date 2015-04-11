@@ -17,8 +17,14 @@ public class Player extends Thread {
 	private PrintWriter output;
 	private List<String> enteredWords;
 	private BoggleServer server;
+	private String playerName;
 
-	public Player(Socket socket, BoggleServer server) {
+	public Player(int playerNum) {
+		this.playerName = "Player" + playerNum;
+	}
+
+	public Player(Socket socket, BoggleServer server, int playerNum) {
+		this.playerName = "Player" + playerNum;
 		this.socket = socket;
 		this.server = server;
 		try {
@@ -30,7 +36,9 @@ public class Player extends Thread {
 	}
 
 	public void send(String message) {
-		output.println(message);
+		if (output != null) {
+			output.println(message);
+		}
 	}
 
 	@Override
@@ -42,9 +50,7 @@ public class Player extends Thread {
 				if (line.startsWith("PING")) {
 					output.println("WELCOME");
 				} else if (line.startsWith(WORDS.toString())) {
-					line = line.replaceFirst(WORDS.toString() + BoggleServer.CMD_DELIM, "");
-					String[] cmdSplit = line.split(BoggleServer.CMD_DELIM);
-					enteredWords = new ArrayList<String>(Arrays.asList(cmdSplit));
+					handleWords(line);
 					server.checkEnd();
 				}
 			}
@@ -57,7 +63,25 @@ public class Player extends Thread {
 		}
 	}
 
+	public void handleWords(String cmdLine) {
+		if (cmdLine.equals(WORDS.toString())) {
+			enteredWords = new ArrayList<String>();
+			return;
+		}
+		cmdLine = cmdLine.replaceFirst(WORDS.toString() + BoggleServer.CMD_DELIM, "");
+		String[] cmdSplit = cmdLine.split(BoggleServer.CMD_DELIM);
+		enteredWords = new ArrayList<String>(Arrays.asList(cmdSplit));
+	}
+
 	public List<String> getEnteredWords() {
 		return enteredWords;
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
 	}
 }
