@@ -18,6 +18,7 @@ public class BoggleClient extends Thread {
 	private BufferedReader in;
 	private PrintWriter out;
 	MainController mainController;
+	private boolean running = true;
 
 	public BoggleClient(MainController mainController) {
 		this.mainController = mainController;
@@ -26,7 +27,7 @@ public class BoggleClient extends Thread {
 	@Override
 	public void run() {
 		try {
-			while (true) {
+			while (running) {
 				String line = in.readLine();
 				if (line.startsWith(START.toString())) {
 					System.out.println("Received START from server.");
@@ -51,6 +52,12 @@ public class BoggleClient extends Thread {
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
+		} finally {
+			out.close();
+			try {
+				in.close();
+			} catch (IOException ignored) {
+			}
 		}
 	}
 
@@ -83,4 +90,7 @@ public class BoggleClient extends Thread {
 		out.println("PING");
 	}
 
+	public void stopBoggle() {
+		running = false;
+	}
 }

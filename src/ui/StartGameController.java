@@ -14,6 +14,7 @@ public class StartGameController {
 	public StartGameController(MainController mainController) {
 		startGame = new StartGame(this);
 		this.mainController = mainController;
+		startGame.ipField.setText("192.168.1.134");
 	}
 
 	public void joinGame() {
@@ -57,5 +58,9 @@ public class StartGameController {
 	private void startGame() {
 		startGame.message.setText("Starting game...");
 		server.startGame();
+	}
+
+	public BoggleServer getServer() {
+		return server;
 	}
 }

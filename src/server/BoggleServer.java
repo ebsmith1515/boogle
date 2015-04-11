@@ -1,6 +1,7 @@
 package server;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class BoggleServer extends Thread {
 	@Override
 	public void run() {
 		try {
-			ServerSocket listener = new ServerSocket(PORT);
+			ServerSocket listener = new ServerSocket(PORT, 0, new InetSocketAddress("0.0.0.0", PORT).getAddress());
 			int playerNum = 1;
 			while (waitingForPlayers) {
 				Player player = new Player(listener.accept(), this, playerNum++);

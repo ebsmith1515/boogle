@@ -33,4 +33,8 @@ public class MainController {
 	private void showCard(String name) {
 		((CardLayout)mainWindow.getLayout()).show(mainWindow, name);
 	}
+
+	public void windowClosing() {
+		System.exit(0);
+	}
 }
