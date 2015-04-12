@@ -32,13 +32,14 @@ public class BoggleClient extends Thread {
 				if (line.startsWith(START.toString())) {
 					System.out.println("Received START from server.");
 					String timeString = line.split(CMD_DELIM)[1];
+					final String letters = line.split(CMD_DELIM)[2];
 					final int gameSeconds;
 					try {
 						gameSeconds = Integer.parseInt(timeString);
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								mainController.showGameBoard(gameSeconds);
+								mainController.showGameBoard(gameSeconds, letters);
 							}
 						});
 					} catch (NumberFormatException ex) {

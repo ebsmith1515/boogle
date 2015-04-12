@@ -25,8 +25,9 @@ public class MainController {
 		resultsBoardController.resultsBoard.fillTable(results);
 	}
 
-	public void showGameBoard(int gameSeconds) {
+	public void showGameBoard(int gameSeconds, String letters) {
 		showCard("GameBoard");
+		gameBoardController.setLetters(letters);
 		gameBoardController.startTimer(gameSeconds);
 	}
 

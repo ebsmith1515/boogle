@@ -1,15 +1,26 @@
 package ui;
 
+import com.sun.deploy.util.StringUtils;
+import com.sun.javafx.css.StyleableProperty;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class GameBoardController {
@@ -24,7 +35,6 @@ public class GameBoardController {
 		this.mainController = mainController;
 		gameBoard = new GameBoard(this);
 		enteredWords = new ArrayList<String>();
-		addLetters();
 		addListeners();
 	}
 
@@ -32,8 +42,10 @@ public class GameBoardController {
 		gameBoard.wordEnter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!enteredWords.contains(gameBoard.wordEnter.getText())) {
-					enteredWords.add(gameBoard.wordEnter.getText());
+				String fixedWord = gameBoard.wordEnter.getText().toLowerCase();
+				fixedWord = fixedWord.replaceAll(" ", "");
+				if (!enteredWords.contains(fixedWord)) {
+					enteredWords.add(fixedWord);
 					setEnteredWordsText();
 				}
 				gameBoard.wordEnter.setText("");
@@ -54,29 +66,35 @@ public class GameBoardController {
 
 	private void setEnteredWordsText() {
 		gameBoard.enteredWordsArea.setText("");
-		for (String word : enteredWords) {
+		ArrayList<String> list = new ArrayList<String>();
+		list.addAll(enteredWords);
+		Collections.reverse(list);
+		for (String word : list) {
 			gameBoard.enteredWordsArea.append(word + "\n");
 		}
-	}
-
-	private void addLetters() {
-		for (int i=0; i < BOARD_SIZE; i++) {
-			for (int j=0; j < BOARD_SIZE; j++) {
-				gameBoard.letterGrid.add(letterLabel(getLetter()));
-			}
-		}
+		gameBoard.enteredWordsArea.setCaretPosition(0);
 	}
 
 	private JLabel letterLabel(String letter) {
 		JLabel label = new JLabel(letter);
-		label.setBorder(new LineBorder(Color.BLACK));
+		label.setFont(new Font("name", Font.PLAIN, 37));
 		label.setHorizontalTextPosition(SwingConstants.CENTER);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
+		Border lineBorder = new LineBorder(Color.BLACK);
+		label.setBorder(lineBorder);
+		label.setPreferredSize(new Dimension(50, 50));
+		label.setMaximumSize(new Dimension(50, 50));
 		return label;
 	}
 
-	private String getLetter() {
-		return "A";
+	public void setLetters(String letters) {
+		int letterIdx = 0;
+		for (int i=0; i < BOARD_SIZE; i++) {
+			for (int j=0; j < BOARD_SIZE; j++) {
+				gameBoard.letterGrid.add(letterLabel(letters.substring(letterIdx, letterIdx+1)), SwingConstants.CENTER);
+				letterIdx++;
+			}
+		}
 	}
 
 	private class BoggleTimerTask extends TimerTask {

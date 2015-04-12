@@ -10,7 +10,7 @@ import ui.StartGameController;
 public class BoggleServer extends Thread {
 
 	public static final int PORT = 9191;
-	private static final int GAME_SECONDS = 10;
+	private static final int GAME_SECONDS = 120;
 	boolean waitingForPlayers = true;
 	public static final String CMD_DELIM = " ";
 
@@ -56,7 +56,8 @@ public class BoggleServer extends Thread {
 	}
 
 	public void startGame() {
-		broadcast(Commands.START.toString() + CMD_DELIM + GAME_SECONDS);
+		String letters = new LetterFactory().getLetterList();
+		broadcast(Commands.START.toString() + CMD_DELIM + GAME_SECONDS + CMD_DELIM + letters);
 	}
 
 	public void broadcast(String message) {
