@@ -48,7 +48,7 @@ public class GameBoardController {
 	}
 
 	private boolean isAllLettersOnBoard(String word) {
-		//TODO: make sure Qu works here
+		word = word.replace("qu", "q");
 		boolean allGood = true;
 		for (int i=0; i < word.length(); i++) {
 			allGood &= gameLetters.contains(word.substring(i, i+1).toUpperCase());
@@ -81,6 +81,11 @@ public class GameBoardController {
 	private JLabel letterLabel(String letter) {
 		JLabel label = new JLabel(letter);
 		label.setFont(new Font("name", Font.PLAIN, 37));
+		if (letter.equals("Q")) {
+			label.setText("Qu");
+			label.setFont(new Font("name", Font.PLAIN, 24));
+		}
+
 		label.setHorizontalTextPosition(SwingConstants.CENTER);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		Border lineBorder = new LineBorder(Color.BLACK);
