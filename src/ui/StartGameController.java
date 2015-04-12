@@ -18,6 +18,7 @@ public class StartGameController {
 	}
 
 	public void joinGame() {
+		startGame.message.setText("");
 		mainController.client = new BoggleClient(mainController);
 		String ipAddress = null;
 		if (!startGame.ipField.getText().isEmpty()) {

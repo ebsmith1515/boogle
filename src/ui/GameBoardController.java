@@ -1,10 +1,7 @@
 package ui;
 
-import com.sun.deploy.util.StringUtils;
-import com.sun.javafx.css.StyleableProperty;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,14 +10,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 public class GameBoardController {
@@ -30,6 +23,7 @@ public class GameBoardController {
 	public static final int BOARD_SIZE = 4;
 	private MainController mainController;
 	private long timeLeft;
+	private String gameLetters;
 
 	public GameBoardController(MainController mainController) {
 		this.mainController = mainController;
@@ -44,13 +38,22 @@ public class GameBoardController {
 			public void actionPerformed(ActionEvent e) {
 				String fixedWord = gameBoard.wordEnter.getText().toLowerCase();
 				fixedWord = fixedWord.replaceAll(" ", "");
-				if (!enteredWords.contains(fixedWord)) {
+				if (!enteredWords.contains(fixedWord) && isAllLettersOnBoard(fixedWord)) {
 					enteredWords.add(fixedWord);
 					setEnteredWordsText();
+					gameBoard.wordEnter.setText("");
 				}
-				gameBoard.wordEnter.setText("");
 			}
 		});
+	}
+
+	private boolean isAllLettersOnBoard(String word) {
+		//TODO: make sure Qu works here
+		boolean allGood = true;
+		for (int i=0; i < word.length(); i++) {
+			allGood &= gameLetters.contains(word.substring(i, i+1).toUpperCase());
+		}
+		return allGood;
 	}
 
 	protected void endGame() {
@@ -88,6 +91,7 @@ public class GameBoardController {
 	}
 
 	public void setLetters(String letters) {
+		this.gameLetters = letters;
 		int letterIdx = 0;
 		for (int i=0; i < BOARD_SIZE; i++) {
 			for (int j=0; j < BOARD_SIZE; j++) {
@@ -95,6 +99,7 @@ public class GameBoardController {
 				letterIdx++;
 			}
 		}
+		gameBoard.wordEnter.requestFocusInWindow();
 	}
 
 	private class BoggleTimerTask extends TimerTask {

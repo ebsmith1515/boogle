@@ -2,6 +2,7 @@ package server;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -39,6 +40,11 @@ public class Results {
 		}
 	}
 
+	public void sortResults() {
+		for (List<Result> list : playerResults.values()) {
+			Collections.sort(list);
+		}
+	}
 
 	//   Eric||<resultstr>||<resultstr>&&Erin||<resultStr>
 	public String serialize() {
@@ -68,7 +74,7 @@ public class Results {
 		return max;
 	}
 
-	public static class Result {
+	public static class Result implements Comparable<Result> {
 		private static final String INNER_RESULT_DELIM = "_";
 		final private String word;
 		private boolean cancelled = false;
@@ -76,6 +82,11 @@ public class Results {
 
 		public Result(String word) {
 			this.word = word;
+		}
+
+		@Override
+		public int compareTo(Result o) {
+			return this.word.compareTo(o.word);
 		}
 
 		protected static Result fromString(String serStr) {
