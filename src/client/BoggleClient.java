@@ -94,4 +94,8 @@ public class BoggleClient extends Thread {
 	public void stopBoggle() {
 		running = false;
 	}
+
+	public void sendName(String name) {
+		out.println(BoggleServer.Commands.NAME.toString() + CMD_DELIM + name);
+	}
 }

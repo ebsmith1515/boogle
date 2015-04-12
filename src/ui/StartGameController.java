@@ -24,26 +24,40 @@ public class StartGameController {
 		if (!startGame.ipField.getText().isEmpty()) {
 			ipAddress = startGame.ipField.getText();
 		}
-		if (mainController.client.connect(ipAddress)) {
-			startGame.joinButton.setEnabled(false);
-			startGame.startButton.setEnabled(false);
-			mainController.client.start();
+
+		if (getName().equals("")) {
+			startGame.message.setText("Please enter a name.");
 		} else {
-			startGame.message.setText("Connection refused. Try again.");
+			if (mainController.client.connect(ipAddress)) {
+				startGame.joinButton.setEnabled(false);
+				startGame.startButton.setEnabled(false);
+				mainController.client.start();
+				mainController.client.sendName(getName());
+			} else {
+				startGame.message.setText("Connection refused. Try again.");
+			}
 		}
 	}
 
-	public void initServer() {
-		if (server != null) {
-			startGame();
-			return;
-		}
-		server = new BoggleServer(this);
-		server.start();
-		startGame.numPlayers.setVisible(true);
-		startGame.message.setText("Waiting for others. Click start again to begin.");
+	public String getName() {
+		return startGame.nameField.getText().replaceAll(" ", "").replaceAll(BoggleServer.CMD_DELIM, "");
+	}
 
-		joinGame();
+	public void initServer() {
+		if (getName().equals("")) {
+			startGame.message.setText("Please enter a name.");
+		} else {
+			if (server != null) {
+				startGame();
+				return;
+			}
+			server = new BoggleServer(this);
+			server.start();
+			startGame.numPlayers.setVisible(true);
+			joinGame();
+			startGame.message.setText("Waiting for others. Click start again to begin.");
+		}
+
 		startGame.startButton.setEnabled(true);
 	}
 
@@ -59,9 +73,5 @@ public class StartGameController {
 	private void startGame() {
 		startGame.message.setText("Starting game...");
 		server.startGame();
-	}
-
-	public BoggleServer getServer() {
-		return server;
 	}
 }

@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import static server.BoggleServer.Commands.NAME;
 import static server.BoggleServer.Commands.WORDS;
 
 public class Player extends Thread {
@@ -52,6 +53,8 @@ public class Player extends Thread {
 				} else if (line.startsWith(WORDS.toString())) {
 					handleWords(line);
 					server.checkEnd();
+				} else if (line.startsWith(NAME.toString())) {
+					setPlayerName(line.split(BoggleServer.CMD_DELIM)[1]);
 				}
 			}
 		} catch (IOException e) {

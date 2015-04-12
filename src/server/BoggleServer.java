@@ -19,7 +19,7 @@ public class BoggleServer extends Thread {
 	private Results results;
 
 	public enum Commands {
-		START,WORDS,RESULTS
+		START,WORDS,NAME,RESULTS
 	}
 
 	public BoggleServer() {

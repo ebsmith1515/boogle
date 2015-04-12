@@ -20,6 +20,7 @@ public class StartGame extends JPanel {
 	JButton startButton;
 	JButton joinButton;
 	JTextField ipField;
+	JTextField nameField;
 	JLabel numPlayers;
 	JLabel message;
 
@@ -54,12 +55,15 @@ public class StartGame extends JPanel {
 		numPlayers = new JLabel();
 		numPlayers.setVisible(false);
 		message = new JLabel();
+		nameField = new JTextField();
 	}
 
 	private void initLayout() {
 		add(new Label("Start Game"));
 		add(startButton);
 		add(joinButton);
+		add(new JLabel("Enter name (no spaces):"));
+		add(nameField);
 		add(ipField);
 		add(numPlayers);
 		add(message);
