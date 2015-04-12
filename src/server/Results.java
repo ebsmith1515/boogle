@@ -104,6 +104,12 @@ public class Results {
 
 		@Override
 		public int compareTo(Result o) {
+			if (this.cancelled && !o.cancelled) {
+				return 1;
+			}
+			if (o.cancelled && !this.cancelled) {
+				return -1;
+			}
 			return this.word.compareTo(o.word);
 		}
 
