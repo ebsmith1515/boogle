@@ -89,7 +89,7 @@ public class BoggleServer extends Thread {
 	}
 
 	private void sendResults() {
-		results.sortResults();
+		results.processResults();
 		broadcast(Commands.RESULTS + CMD_DELIM + results.serialize());
 	}
 

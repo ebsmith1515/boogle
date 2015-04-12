@@ -36,7 +36,11 @@ public class ResultsBoard extends JPanel {
 			int resultIndex = 0;
 			playerNames[colIndex] = entry.getKey();
 			for (Results.Result result : entry.getValue()) {
-				resultTableModel[resultIndex][colIndex] = result.getWord();
+				String resultWord = result.getWord();
+				if (result.isCancelled()) {
+					resultWord = "-" + resultWord + "-";
+				}
+				resultTableModel[resultIndex][colIndex] = resultWord;
 				resultIndex++;
 			}
 			colIndex++;
