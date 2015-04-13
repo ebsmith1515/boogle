@@ -12,6 +12,7 @@ public class MainController {
 	protected StartGameController startGameController;
 	protected ResultsBoardController resultsBoardController;
 	protected BoggleClient client;
+	protected String gameLetters;
 
 	public MainController() {
 		gameBoardController = new GameBoardController(this);
@@ -27,8 +28,10 @@ public class MainController {
 
 	public void showGameBoard(int gameSeconds, String letters) {
 		showCard("GameBoard");
-		gameBoardController.setLetters(letters);
+		gameLetters = letters;
+		gameBoardController.setGameLetters(letters);
 		gameBoardController.startTimer(gameSeconds);
+		resultsBoardController.setLetters(gameLetters);
 	}
 
 	private void showCard(String name) {

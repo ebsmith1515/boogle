@@ -51,6 +51,7 @@ public class StartGameController {
 				startGame();
 				return;
 			}
+			startGame.ipField.setText("localhost");
 			server = new BoggleServer(this);
 			server.start();
 			startGame.numPlayers.setVisible(true);

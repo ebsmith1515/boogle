@@ -11,4 +11,9 @@ public class ResultsBoardController {
 		this.mainController = mainController;
 		resultsBoard = new ResultsBoard();
 	}
+
+	protected void setLetters(String letters) {
+		resultsBoard.letterGrid.setLetters(letters);
+		resultsBoard.repaint();
+	}
 }

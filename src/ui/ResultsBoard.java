@@ -1,8 +1,8 @@
 package ui;
 
-import java.awt.BorderLayout;
 import java.util.List;
 import java.util.Map;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -13,9 +13,13 @@ public class ResultsBoard extends JPanel {
 
 	private JTable wordsTable;
 	private JTable scoreTable;
+	private JScrollPane wordsScroll;
+	protected LetterGrid letterGrid;
 
 	public ResultsBoard() {
 		scoreTable = new JTable();
+		letterGrid = new LetterGrid();
+		initLayout();
 	}
 
 //	private Results makeResults() {
@@ -46,15 +50,16 @@ public class ResultsBoard extends JPanel {
 			colIndex++;
 		}
 		wordsTable = new JTable(resultTableModel, playerNames);
-		initLayout();
+		wordsScroll.setViewportView(wordsTable);
 	}
 
 	private void initLayout() {
-		setLayout(new BorderLayout());
-		JScrollPane wordsScroll = new JScrollPane(wordsTable);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		wordsScroll = new JScrollPane();
 		wordsScroll.setSize(300, 300);
-		add(wordsScroll, BorderLayout.CENTER);
-		add(new JScrollPane(scoreTable), BorderLayout.SOUTH);
+		add(letterGrid);
+		add(wordsScroll);
+		//add(new JScrollPane(scoreTable), BorderLayout.SOUTH);
 	}
 
 	private static class ResultsTableModel extends AbstractTableModel {

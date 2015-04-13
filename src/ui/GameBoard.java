@@ -18,7 +18,7 @@ public class GameBoard extends JPanel {
 
 	protected GameBoardController gameBoardController;
 
-	protected JPanel letterGrid;
+	protected LetterGrid letterGrid;
 	protected JTextField wordEnter;
 	protected JTextArea enteredWordsArea;
 	protected JScrollPane enteredWordsScroll;
@@ -36,9 +36,9 @@ public class GameBoard extends JPanel {
 		enteredWordsArea = new JTextArea();
 		enteredWordsArea.setEditable(false);
 		enteredWordsArea.setPreferredSize(new Dimension(150, 600));
-		letterGrid = new JPanel();
+		letterGrid = new LetterGrid();
 		timer = new JLabel();
-		letterGrid.setLayout(new GridLayout(BOARD_SIZE, BOARD_SIZE));
+
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JPanel letterGridContainer = new JPanel();
 		letterGridContainer.setLayout(new BoxLayout(letterGridContainer, BoxLayout.Y_AXIS));
