@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import server.Player;
@@ -60,5 +61,12 @@ public class ResultsTest {
 
 		results.processResults();
 		results.getPlayerResults().get("Player1");
+	}
+
+	@Test
+	public void testRandom() {
+		for (int i=0; i< 100; i++){
+			System.out.println(new Random().nextInt(6));
+		}
 	}
 }

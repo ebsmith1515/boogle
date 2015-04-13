@@ -44,7 +44,7 @@ public class Results {
 	private void markDups(List<Result> list1, List<Result> list2) {
 		for (Result result1 : list1) {
 			for (Result result2 : list2) {
-				if (result1.equals(result2)) {
+				if (result1.getWord().equals(result2.getWord())) {
 					result1.setCancelled(true);
 					result2.setCancelled(true);
 				}
@@ -53,14 +53,14 @@ public class Results {
 	}
 
 	public void processResults() {
-		for (List<Result> list : playerResults.values()) {
-			Collections.sort(list);
-		}
 		String[] keySet = playerResults.keySet().toArray(new String[playerResults.size()]);
 		for (int i=0; i < keySet.length - 1; i++) {
 			for (int j=i+1; j < keySet.length; j++) {
 				markDups(playerResults.get(keySet[i]), playerResults.get(keySet[j]));
 			}
+		}
+		for (List<Result> list : playerResults.values()) {
+			Collections.sort(list);
 		}
 	}
 
@@ -111,21 +111,6 @@ public class Results {
 				return -1;
 			}
 			return this.word.compareTo(o.word);
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (o == null || getClass() != o.getClass()) return false;
-
-			Result result = (Result) o;
-
-			return word.equals(result.word);
-		}
-
-		@Override
-		public int hashCode() {
-			return word.hashCode();
 		}
 
 		protected static Result fromString(String serStr) {

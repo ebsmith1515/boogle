@@ -1,5 +1,6 @@
 package server;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,9 +41,10 @@ public class LetterFactory {
 
 	public String getLetterList() {
 		String gameLetterList = "";
-		Collections.shuffle(letterMatrix);
+		Random rnd = new SecureRandom();
+		Collections.shuffle(letterMatrix, rnd);
 		for (String[] cube : letterMatrix) {
-			int idx = new Random().nextInt(6);
+			int idx = rnd.nextInt(6);
 			gameLetterList += cube[idx];
 		}
 		return gameLetterList;
