@@ -1,6 +1,8 @@
 package ui;
 
 import client.BoggleClient;
+import java.io.IOException;
+import java.net.InetAddress;
 import javax.swing.SwingUtilities;
 import server.BoggleServer;
 
@@ -56,7 +58,13 @@ public class StartGameController {
 			server.start();
 			startGame.numPlayers.setVisible(true);
 			joinGame();
-			startGame.message.setText("Waiting for others. Click start again to begin.");
+			String address = "unknown";
+			try {
+				address = InetAddress.getLocalHost().getHostAddress();
+			} catch (IOException ignored) {
+
+			}
+			startGame.message.setText("Waiting for others to connect at " + address + ". Click start again to begin.");
 		}
 
 		startGame.startButton.setEnabled(true);
