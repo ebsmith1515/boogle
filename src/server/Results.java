@@ -1,5 +1,9 @@
 package server;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,6 +14,7 @@ import java.util.TreeMap;
 
 public class Results {
 
+	private static final String DICTIONARY_URL = "http://www.puzzlers.org/pub/wordlists/enable1.txt";
 	private Map<String, List<Result>> playerResults;
 	public static final String RESULTS_DELIM = "%%";
 	public static final String PLAYER_DELIM = "&&";
@@ -52,7 +57,31 @@ public class Results {
 		}
 	}
 
+	private void checkDictionary() throws IOException {
+		BufferedReader in = new BufferedReader(new InputStreamReader(new URL(DICTIONARY_URL).openStream()));
+		Map<String, String> dictionary = new HashMap<String, String>();
+		String word;
+		while ((word = in.readLine()) != null) {
+			dictionary.put(word, "");
+		}
+
+		for (String playerName : playerResults.keySet()) {
+			List<Result> playerWords = playerResults.get(playerName);
+			for (Result result : playerWords) {
+				if (!dictionary.containsKey(result.word)) {
+					result.invalid = true;
+				}
+			}
+		}
+	}
+
 	public void processResults() {
+		try {
+			checkDictionary();
+		} catch (IOException ex) {
+			System.out.println("Error checking dictionary. Not checking.");
+			ex.printStackTrace();
+		}
 		String[] keySet = playerResults.keySet().toArray(new String[playerResults.size()]);
 		for (int i=0; i < keySet.length - 1; i++) {
 			for (int j=i+1; j < keySet.length; j++) {
@@ -104,6 +133,12 @@ public class Results {
 
 		@Override
 		public int compareTo(Result o) {
+			if (this.invalid && !o.invalid) {
+				return 1;
+			}
+			if (o.invalid && !this.invalid) {
+				return -1;
+			}
 			if (this.cancelled && !o.cancelled) {
 				return 1;
 			}

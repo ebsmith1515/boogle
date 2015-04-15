@@ -41,7 +41,9 @@ public class ResultsBoard extends JPanel {
 			playerNames[colIndex] = entry.getKey();
 			for (Results.Result result : entry.getValue()) {
 				String resultWord = result.getWord();
-				if (result.isCancelled()) {
+				if (result.isInvalid()) {
+					resultWord = resultWord + " (invalid)";
+				} else if (result.isCancelled()) {
 					resultWord = "-" + resultWord + "-";
 				}
 				resultTableModel[resultIndex][colIndex] = resultWord;
