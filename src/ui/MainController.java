@@ -57,4 +57,8 @@ public class MainController {
 		}
 		resultsBoardController.fillScorePanel(scoreMap);
 	}
+
+	public boolean isServer() {
+		return server != null;
+	}
 }

@@ -20,7 +20,7 @@ public class ResultsBoard extends JPanel {
 	private JTable wordsTable;
 	private JScrollPane wordsScroll;
 	protected LetterGrid letterGrid;
-	private JButton nextRoundButton;
+	protected JButton nextRoundButton;
 
 	public ResultsBoard(final ResultsBoardController controller) {
 		letterGrid = new LetterGrid();

@@ -18,6 +18,9 @@ public class ResultsBoardController {
 
 	protected void fillScorePanel(Map<String, Integer> scores) {
 		resultsBoard.fillScorePanel(scores);
+		if (!mainController.isServer()) {
+			resultsBoard.nextRoundButton.setVisible(false);
+		}
 	}
 
 	public void nextRoundButtonPressed() {
