@@ -23,6 +23,7 @@ public class GameBoard extends JPanel {
 	protected JTextArea enteredWordsArea;
 	protected JScrollPane enteredWordsScroll;
 	protected JLabel timer;
+	protected JLabel message;
 
 	public GameBoard(GameBoardController gameBoardController) {
 		this.gameBoardController = gameBoardController;
@@ -38,6 +39,7 @@ public class GameBoard extends JPanel {
 		enteredWordsArea.setPreferredSize(new Dimension(150, 600));
 		letterGrid = new LetterGrid();
 		timer = new JLabel();
+		message = new JLabel();
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		JPanel letterGridContainer = new JPanel();
@@ -49,6 +51,7 @@ public class GameBoard extends JPanel {
 		topPanel.add(enteredWordsScroll = new JScrollPane(enteredWordsArea), BorderLayout.CENTER);
 		add(timer);
 		add(topPanel);
+		add(message);
 		add(wordEnter);
 	}
 }

@@ -27,13 +27,18 @@ public class GameBoardController {
 		gameBoard.wordEnter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				gameBoard.message.setText(" ");
 				String fixedWord = gameBoard.wordEnter.getText().toLowerCase();
 				fixedWord = fixedWord.replaceAll(" ", "");
-				if (!enteredWords.contains(fixedWord) && isAllLettersOnBoard(fixedWord)) {
+				if (enteredWords.contains(fixedWord)) {
+					gameBoard.message.setText(fixedWord + " already entered.");
+				} else if (!isAllLettersOnBoard(fixedWord)) {
+					gameBoard.message.setText(fixedWord + " is not on the board.");
+				} else {
 					enteredWords.add(fixedWord);
 					setEnteredWordsText();
-					gameBoard.wordEnter.setText("");
 				}
+				gameBoard.wordEnter.setText("");
 			}
 		});
 	}
@@ -76,6 +81,7 @@ public class GameBoardController {
 	}
 
 	public void startGame(String letters, int gameSeconds) {
+		gameBoard.message.setText(" ");
 		enteredWords = new ArrayList<String>();
 		gameBoard.enteredWordsArea.setText("");
 		setGameLetters(letters);
