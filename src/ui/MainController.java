@@ -2,6 +2,9 @@ package ui;
 
 import client.BoggleClient;
 import java.awt.CardLayout;
+import java.util.Map;
+import java.util.TreeMap;
+import server.BoggleServer;
 import server.Results;
 
 
@@ -12,6 +15,7 @@ public class MainController {
 	protected StartGameController startGameController;
 	protected ResultsBoardController resultsBoardController;
 	protected BoggleClient client;
+	protected BoggleServer server;
 	protected String gameLetters;
 
 	public MainController() {
@@ -29,8 +33,7 @@ public class MainController {
 	public void showGameBoard(int gameSeconds, String letters) {
 		showCard("GameBoard");
 		gameLetters = letters;
-		gameBoardController.setGameLetters(letters);
-		gameBoardController.startTimer(gameSeconds);
+		gameBoardController.startGame(letters, gameSeconds);
 		resultsBoardController.setLetters(gameLetters);
 	}
 
@@ -40,5 +43,18 @@ public class MainController {
 
 	public void windowClosing() {
 		System.exit(0);
+	}
+
+	public void nextRoundButtonPressed() {
+		server.nextRound();
+	}
+
+	public void showScores(String scoreStr) {
+		Map<String, Integer> scoreMap = new TreeMap<String, Integer>();
+		String[] scoreSplit = scoreStr.split(BoggleServer.CMD_DELIM);
+		for (int i=0; i < scoreSplit.length - 1; i+=2) {
+			scoreMap.put(scoreSplit[i], Integer.parseInt(scoreSplit[i+1]));
+		}
+		resultsBoardController.fillScorePanel(scoreMap);
 	}
 }

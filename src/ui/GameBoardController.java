@@ -20,7 +20,6 @@ public class GameBoardController {
 	public GameBoardController(MainController mainController) {
 		this.mainController = mainController;
 		gameBoard = new GameBoard(this);
-		enteredWords = new ArrayList<String>();
 		addListeners();
 	}
 
@@ -74,6 +73,13 @@ public class GameBoardController {
 		mainController.gameLetters = gameLetters;
 		gameBoard.letterGrid.setLetters(gameLetters);
 		gameBoard.wordEnter.requestFocusInWindow();
+	}
+
+	public void startGame(String letters, int gameSeconds) {
+		enteredWords = new ArrayList<String>();
+		gameBoard.enteredWordsArea.setText("");
+		setGameLetters(letters);
+		startTimer(gameSeconds);
 	}
 
 

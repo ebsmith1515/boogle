@@ -20,7 +20,6 @@ public class StartGame extends JPanel {
 	JLabel numPlayers;
 	JLabel message;
 
-
 	public StartGame(StartGameController controller) {
 		this.startGameController = controller;
 		initComponents();

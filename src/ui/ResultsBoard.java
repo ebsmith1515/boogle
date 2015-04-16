@@ -1,25 +1,37 @@
 package ui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import net.miginfocom.swing.MigLayout;
 import server.Results;
 
 public class ResultsBoard extends JPanel {
 
+	private JPanel scorePanel;
 	private JTable wordsTable;
-	private JTable scoreTable;
 	private JScrollPane wordsScroll;
 	protected LetterGrid letterGrid;
+	private JButton nextRoundButton;
 
-	public ResultsBoard() {
-		scoreTable = new JTable();
+	public ResultsBoard(final ResultsBoardController controller) {
 		letterGrid = new LetterGrid();
+		nextRoundButton = new JButton("Next Round");
 		initLayout();
+		nextRoundButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.nextRoundButtonPressed();
+			}
+		});
 	}
 
 //	private Results makeResults() {
@@ -56,12 +68,27 @@ public class ResultsBoard extends JPanel {
 	}
 
 	private void initLayout() {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		scorePanel = new JPanel(new MigLayout("fillx"));
+		for (int i=0; i < 6; i++) {
+			scorePanel.add(new JLabel("_"));
+		}
+		setLayout(new MigLayout("fillx"));
 		wordsScroll = new JScrollPane();
 		wordsScroll.setSize(300, 300);
-		add(letterGrid);
-		add(wordsScroll);
+		add(letterGrid, "wrap");
+		add(wordsScroll, "wrap");
+		add(nextRoundButton, "wrap");
+		add(scorePanel);
 		//add(new JScrollPane(scoreTable), BorderLayout.SOUTH);
+	}
+
+	protected void fillScorePanel(Map<String, Integer> scores) {
+		scorePanel.removeAll();
+		for (String playerName : scores.keySet()) {
+			scorePanel.add(new JLabel(playerName + ":"));
+			scorePanel.add(new JLabel(scores.get(playerName).toString()), "wrap");
+		}
+		repaint();
 	}
 
 	private static class ResultsTableModel extends AbstractTableModel {

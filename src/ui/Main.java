@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-		frame.setSize(400, 400);
+		frame.setSize(800, 600);
 		final MainController mainController = new MainController();
 		MainWindow mainWindow = mainController.mainWindow;
 		frame.setContentPane(mainWindow);

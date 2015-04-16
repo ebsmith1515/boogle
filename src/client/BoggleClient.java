@@ -49,6 +49,10 @@ public class BoggleClient extends Thread {
 					String resultsStr = line.split(CMD_DELIM)[1];
 					Results results = new Results(resultsStr);
 					mainController.showResults(results);
+				} else if (line.startsWith(SCORES.toString())) {
+					System.out.println(line);
+					String scoreStr = line.substring((SCORES.toString() + " ").length());
+					mainController.showScores(scoreStr);
 				}
 			}
 		} catch (IOException ex) {

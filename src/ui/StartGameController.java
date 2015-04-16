@@ -8,7 +8,6 @@ import server.BoggleServer;
 
 public class StartGameController {
 
-	private BoggleServer server;
 	private MainController mainController;
 
 	protected StartGame startGame;
@@ -49,13 +48,13 @@ public class StartGameController {
 		if (getName().equals("")) {
 			startGame.message.setText("Please enter a name.");
 		} else {
-			if (server != null) {
+			if (mainController.server != null) {
 				startGame();
 				return;
 			}
 			startGame.ipField.setText("localhost");
-			server = new BoggleServer(this);
-			server.start();
+			mainController.server = new BoggleServer(this);
+			mainController.server.start();
 			startGame.numPlayers.setVisible(true);
 			joinGame();
 			String address = "unknown";
@@ -81,6 +80,6 @@ public class StartGameController {
 
 	private void startGame() {
 		startGame.message.setText("Starting game...");
-		server.startGame();
+		mainController.server.startGame();
 	}
 }

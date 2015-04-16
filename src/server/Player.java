@@ -19,6 +19,7 @@ public class Player extends Thread {
 	private List<String> enteredWords;
 	private BoggleServer server;
 	private String playerName;
+	private int score;
 
 	public Player(int playerNum) {
 		this.playerName = "Player" + playerNum;
@@ -34,6 +35,10 @@ public class Player extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void nextRound() {
+		enteredWords = null;
 	}
 
 	public void send(String message) {
@@ -86,5 +91,13 @@ public class Player extends Thread {
 
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void incrementScore() {
+		score++;
 	}
 }

@@ -1,19 +1,26 @@
 package ui;
 
-/**
- * Created by esmith on 4/10/15.
- */
+import java.util.Map;
+
 public class ResultsBoardController {
 	MainController mainController;
 	ResultsBoard resultsBoard;
 
 	public ResultsBoardController(MainController mainController) {
 		this.mainController = mainController;
-		resultsBoard = new ResultsBoard();
+		resultsBoard = new ResultsBoard(this);
 	}
 
 	protected void setLetters(String letters) {
 		resultsBoard.letterGrid.setLetters(letters);
 		resultsBoard.repaint();
+	}
+
+	protected void fillScorePanel(Map<String, Integer> scores) {
+		resultsBoard.fillScorePanel(scores);
+	}
+
+	public void nextRoundButtonPressed() {
+		mainController.nextRoundButtonPressed();
 	}
 }

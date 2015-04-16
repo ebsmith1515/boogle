@@ -14,12 +14,12 @@ public class BoggleServer extends Thread {
 	boolean waitingForPlayers = true;
 	public static final String CMD_DELIM = " ";
 
-	private List<Player> players = new ArrayList<Player>();
+	private List<Player> players;
 	protected StartGameController startGameController;
 	private Results results;
 
 	public enum Commands {
-		START,WORDS,NAME,RESULTS
+		START,WORDS,NAME,RESULTS,SCORES
 	}
 
 	public BoggleServer() {
@@ -32,6 +32,12 @@ public class BoggleServer extends Thread {
 
 	@Override
 	public void run() {
+		resetGame();
+	}
+
+	public void resetGame() {
+		players = new ArrayList<Player>();
+		results = null;
 		try {
 			ServerSocket listener = new ServerSocket(PORT, 0, new InetSocketAddress("0.0.0.0", PORT).getAddress());
 			int playerNum = 1;
@@ -44,6 +50,22 @@ public class BoggleServer extends Thread {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	protected void sendScores() {
+		String scoreString = Commands.SCORES.toString();
+		for (Player player : players) {
+			scoreString += CMD_DELIM + player.getPlayerName() + CMD_DELIM + player.getScore();
+		}
+		broadcast(scoreString);
+	}
+
+	public void nextRound() {
+		sentResults = false;
+		for (Player player : players) {
+			player.nextRound();
+		}
+		startGame();
 	}
 
 	public void addPlayer(Player player) {
@@ -85,6 +107,19 @@ public class BoggleServer extends Thread {
 				}
 			}
 			sendResults();
+			calculateScores();
+			sendScores();
+		}
+	}
+
+	private void calculateScores() {
+		for (Player player : players) {
+			List<Results.Result> playerResults = results.getPlayerResults().get(player.getPlayerName());
+			for (Results.Result result : playerResults) {
+				if (!result.isInvalid() && !result.isCancelled()) {
+					player.incrementScore();
+				}
+			}
 		}
 	}
 
