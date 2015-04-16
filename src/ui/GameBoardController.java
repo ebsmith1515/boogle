@@ -30,10 +30,12 @@ public class GameBoardController {
 				gameBoard.message.setText(" ");
 				String fixedWord = gameBoard.wordEnter.getText().toLowerCase();
 				fixedWord = fixedWord.replaceAll(" ", "");
-				if (enteredWords.contains(fixedWord)) {
-					gameBoard.message.setText(fixedWord + " already entered.");
+				if (fixedWord.length() < 3) {
+					gameBoard.message.setText("Not 3 letters");
+				} else if (enteredWords.contains(fixedWord)) {
+					gameBoard.message.setText(fixedWord + " already entered");
 				} else if (!isAllLettersOnBoard(fixedWord)) {
-					gameBoard.message.setText(fixedWord + " is not on the board.");
+					gameBoard.message.setText(fixedWord + " is not on the board");
 				} else {
 					enteredWords.add(fixedWord);
 					setEnteredWordsText();
