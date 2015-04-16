@@ -59,7 +59,7 @@ public class ResultsTest {
 		results.addResult("Player2", "wurld");
 		results.addResult("Player3", "wirld");
 
-		results.processResults();
+		results.processResults("HELLOOOOWRLDIUUU");
 		results.getPlayerResults().get("Player1");
 	}
 

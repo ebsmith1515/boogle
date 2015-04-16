@@ -10,13 +10,14 @@ import ui.StartGameController;
 public class BoggleServer extends Thread {
 
 	public static final int PORT = 9191;
-	private static final int GAME_SECONDS = 120;
+	private static final int GAME_SECONDS = 20;
 	boolean waitingForPlayers = true;
 	public static final String CMD_DELIM = " ";
 
 	private List<Player> players;
 	protected StartGameController startGameController;
 	private Results results;
+	private String gameLetters;
 
 	public enum Commands {
 		START,WORDS,NAME,RESULTS,SCORES
@@ -78,8 +79,8 @@ public class BoggleServer extends Thread {
 	}
 
 	public void startGame() {
-		String letters = new LetterFactory().getLetterList();
-		broadcast(Commands.START.toString() + CMD_DELIM + GAME_SECONDS + CMD_DELIM + letters);
+		gameLetters = new LetterFactory().getLetterList();
+		broadcast(Commands.START.toString() + CMD_DELIM + GAME_SECONDS + CMD_DELIM + gameLetters);
 	}
 
 	public void broadcast(String message) {
@@ -124,7 +125,7 @@ public class BoggleServer extends Thread {
 	}
 
 	private void sendResults() {
-		results.processResults();
+		results.processResults(gameLetters);
 		broadcast(Commands.RESULTS + CMD_DELIM + results.serialize());
 	}
 

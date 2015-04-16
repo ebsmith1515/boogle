@@ -54,25 +54,31 @@ public class Results {
 		}
 	}
 
-	private void checkDictionary() throws IOException {
+	private void checkDictionary(WordChecker wordChecker) throws IOException {
 		WordList wordList = WordList.getInstance();
 		for (String playerName : playerResults.keySet()) {
 			List<Result> playerWords = playerResults.get(playerName);
 			for (Result result : playerWords) {
 				if (!wordList.checkWord(result.word)) {
 					result.invalid = true;
+				} else {
+					if (!wordChecker.checkWord(result.word)) {
+						result.invalid = true;
+					}
 				}
 			}
 		}
 	}
 
-	public void processResults() {
+	public void processResults(String gameLetters) {
+		WordChecker checker = new WordChecker(gameLetters);
 		try {
-			checkDictionary();
+			checkDictionary(checker);
 		} catch (IOException ex) {
 			System.out.println("Error checking dictionary. Not checking.");
 			ex.printStackTrace();
 		}
+
 		String[] keySet = playerResults.keySet().toArray(new String[playerResults.size()]);
 		for (int i=0; i < keySet.length - 1; i++) {
 			for (int j=i+1; j < keySet.length; j++) {

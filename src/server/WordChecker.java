@@ -8,16 +8,19 @@ public class WordChecker {
 
 	private char[][] board;
 
-	public WordChecker(String letters, int boardSize) {
+	public WordChecker(String letters) {
+		int boardSize = (int)Math.round(Math.sqrt(letters.length()));
+		board = new char[boardSize][boardSize];
 		int letterIdx=0;
 		for (int i = 0; i < boardSize; i++) {
 			for (int j = 0; j < boardSize; j++) {
-				board[i][j] = letters.charAt(letterIdx);
+				board[i][j] = letters.charAt(letterIdx++);
 			}
 		}
 	}
 
-	protected boolean checkWord(String word) {
+	public boolean checkWord(String word) {
+		word = word.toUpperCase();
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (checkWord(word, new Coord(i, j), new ArrayList<Coord>())) {
