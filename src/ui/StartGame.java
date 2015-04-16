@@ -1,18 +1,14 @@
 package ui;
 
-import java.awt.Dimension;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import net.miginfocom.swing.MigLayout;
 
-/**
- * Created by esmith on 4/8/15.
- */
 public class StartGame extends JPanel {
 
 	private StartGameController startGameController;
@@ -48,7 +44,7 @@ public class StartGame extends JPanel {
 	}
 
 	private void initComponents() {
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new MigLayout("fillx"));
 		startButton = new JButton("Start Game");
 		joinButton = new JButton("Join Game");
 		ipField = new JTextField();
@@ -59,14 +55,15 @@ public class StartGame extends JPanel {
 	}
 
 	private void initLayout() {
-		add(new Label("Start Game"));
-		add(startButton);
-		add(joinButton);
+		add(new Label("Start Game"), "span, center, wrap");
+		add(startButton, "split, span");
+		add(joinButton, "wrap");
 		add(new JLabel("Enter name (no spaces):"));
-		add(nameField);
-		add(ipField);
-		add(numPlayers);
-		add(message);
-		message.setPreferredSize(new Dimension(600, 600));
+		add(nameField, "wrap, growx");
+		add(new JLabel("IP"));
+		add(ipField, "wrap, growx");
+		add(numPlayers, "span, wrap");
+		add(message, "span");
+		//message.setPreferredSize(new Dimension(600, 600));
 	}
 }
