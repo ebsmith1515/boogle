@@ -56,6 +56,7 @@ public class GameBoardController {
 
 	protected void endGame() {
 		mainController.client.sendWords(enteredWords);
+		gameBoard.wordEnter.setEnabled(false);
 	}
 
 	protected void startTimer(int gameSeconds) {
@@ -84,6 +85,8 @@ public class GameBoardController {
 
 	public void startGame(String letters, int gameSeconds) {
 		gameBoard.message.setText(" ");
+		gameBoard.wordEnter.setText("");
+		gameBoard.wordEnter.setEnabled(true);
 		enteredWords = new ArrayList<String>();
 		gameBoard.enteredWordsArea.setText("");
 		setGameLetters(letters);
