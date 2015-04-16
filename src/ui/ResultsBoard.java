@@ -88,6 +88,7 @@ public class ResultsBoard extends JPanel {
 			scorePanel.add(new JLabel(playerName + ":"));
 			scorePanel.add(new JLabel(scores.get(playerName).toString()), "wrap");
 		}
+		validate();
 		repaint();
 	}
 
