@@ -23,6 +23,10 @@ public class ResultsBoardController {
 		}
 	}
 
+	public void showAllWords(String[] allWords) {
+		resultsBoard.showAllWords(allWords);
+	}
+
 	public void nextRoundButtonPressed() {
 		mainController.nextRoundButtonPressed();
 	}

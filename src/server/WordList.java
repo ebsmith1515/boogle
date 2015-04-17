@@ -11,7 +11,7 @@ public class WordList {
 	private static WordList instance;
 	private static final String DICTIONARY_URL = "http://www.puzzlers.org/pub/wordlists/enable1.txt";
 
-	Map<String, String> dictionary;
+	protected Map<String, String> dictionary;
 
 	public static WordList getInstance() throws IOException {
 		if (instance == null) {

@@ -58,6 +58,10 @@ public class MainController {
 		resultsBoardController.fillScorePanel(scoreMap);
 	}
 
+	public void showAllWords(String[] allWords) {
+		resultsBoardController.showAllWords(allWords);
+	}
+
 	public boolean isServer() {
 		return server != null;
 	}

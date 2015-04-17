@@ -9,7 +9,11 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import server.BoggleServer;
 import static server.BoggleServer.CMD_DELIM;
-import static server.BoggleServer.Commands.*;
+import static server.BoggleServer.Commands.ALLWORDS;
+import static server.BoggleServer.Commands.RESULTS;
+import static server.BoggleServer.Commands.SCORES;
+import static server.BoggleServer.Commands.START;
+import static server.BoggleServer.Commands.WORDS;
 import server.Results;
 import ui.MainController;
 
@@ -50,9 +54,11 @@ public class BoggleClient extends Thread {
 					Results results = new Results(resultsStr);
 					mainController.showResults(results);
 				} else if (line.startsWith(SCORES.toString())) {
-					System.out.println(line);
 					String scoreStr = line.substring((SCORES.toString() + " ").length());
 					mainController.showScores(scoreStr);
+				} else if (line.startsWith(ALLWORDS.toString())) {
+					String wordStr = line.substring((ALLWORDS.toString() + " ").length());
+					mainController.showAllWords(wordStr.split(CMD_DELIM));
 				}
 			}
 		} catch (IOException ex) {

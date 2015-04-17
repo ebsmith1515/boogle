@@ -1,15 +1,17 @@
 package ui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import net.miginfocom.swing.MigLayout;
 import server.Results;
@@ -17,8 +19,8 @@ import server.Results;
 public class ResultsBoard extends JPanel {
 
 	private JPanel scorePanel;
-	private JTable wordsTable;
-	private JScrollPane wordsScroll;
+	private JScrollPane playerWordsScroll;
+	private JList<String> allWordsList;
 	protected LetterGrid letterGrid;
 	protected JButton nextRoundButton;
 
@@ -63,23 +65,33 @@ public class ResultsBoard extends JPanel {
 			}
 			colIndex++;
 		}
-		wordsTable = new JTable(resultTableModel, playerNames);
-		wordsScroll.setViewportView(wordsTable);
+		JTable wordsTable = new JTable(resultTableModel, playerNames);
+		playerWordsScroll.setViewportView(wordsTable);
 	}
 
 	private void initLayout() {
+		allWordsList = new JList<String>();
+		allWordsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		allWordsList.setLayoutOrientation(JList.VERTICAL);
+		JScrollPane listScroll = new JScrollPane(allWordsList);
+		listScroll.setPreferredSize(new Dimension(300, 400));
 		scorePanel = new JPanel(new MigLayout("fillx"));
 		for (int i=0; i < 6; i++) {
 			scorePanel.add(new JLabel("_"));
 		}
 		setLayout(new MigLayout("fillx"));
-		wordsScroll = new JScrollPane();
-		wordsScroll.setSize(300, 300);
-		add(letterGrid, "wrap");
-		add(wordsScroll, "wrap");
+		playerWordsScroll = new JScrollPane();
+		playerWordsScroll.setSize(300, 300);
+		add(letterGrid);
+		add(listScroll, "spany, wrap");
+		add(playerWordsScroll, "wrap");
 		add(nextRoundButton, "wrap");
 		add(scorePanel);
 		//add(new JScrollPane(scoreTable), BorderLayout.SOUTH);
+	}
+
+	protected void showAllWords(String[] wordList) {
+		allWordsList.setListData(wordList);
 	}
 
 	protected void fillScorePanel(Map<String, Integer> scores) {
