@@ -13,7 +13,7 @@ public class WordCheckerTest {
 		String board = 	"EATA";
 		board += 		"TALE";
 		board += 		"OILA";
-		board += 		"RSTN";
+		board += 		"RSTQ";
 		WordChecker checker = new WordChecker(board);
 
 		assertTrue(checker.checkWord("EAT".toLowerCase()));
@@ -21,8 +21,11 @@ public class WordCheckerTest {
 		assertTrue(checker.checkWord("OIL".toLowerCase()));
 		assertTrue(checker.checkWord("ROT".toLowerCase()));
 		assertTrue(checker.checkWord("RIOS".toLowerCase()));
+		assertTrue(checker.checkWord("LTQUA"));
+		assertTrue(checker.checkWord("QUA"));
 		assertFalse(checker.checkWord("EAR".toLowerCase()));
 		assertFalse(checker.checkWord("ROIR".toLowerCase()));
-		assertFalse(checker.checkWord("ROIN".toLowerCase()));
+		assertFalse(checker.checkWord("TQA".toLowerCase()));
+		assertFalse(checker.checkWord("LAQ".toLowerCase()));
 	}
 }

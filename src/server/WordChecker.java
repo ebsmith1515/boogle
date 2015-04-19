@@ -41,6 +41,12 @@ public class WordChecker {
 		if (used.contains(pos)) {
 			return false;
 		}
+		if (word.charAt(0) == 'Q') {
+			if (word.length() == 1 || word.charAt(1) != 'U') {
+				return false;
+			}
+			word = word.replaceFirst("U", "");
+		}
 		if (board[pos.row][pos.col] == word.charAt(0)) {
 			if (word.length() == 1) {
 				return true;
