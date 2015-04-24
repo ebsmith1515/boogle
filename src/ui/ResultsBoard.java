@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -23,6 +24,7 @@ public class ResultsBoard extends JPanel {
 	private JList<String> allWordsList;
 	protected LetterGrid letterGrid;
 	protected JButton nextRoundButton;
+	private Map<String, Integer> playerRoundScore;
 
 	public ResultsBoard(final ResultsBoardController controller) {
 		letterGrid = new LetterGrid();
@@ -37,21 +39,26 @@ public class ResultsBoard extends JPanel {
 	}
 
 	public void fillTable(Results results) {
+		playerRoundScore = new TreeMap<String, Integer>();
 		String[][] resultTableModel = new String[results.getMaxRows()][results.getPlayerResults().size()];
 		String[] playerNames = new String[results.getPlayerResults().size()];
 		int colIndex = 0;
 		for (Map.Entry<String, List<Results.Result>> entry : results.getPlayerResults().entrySet()) {
 			int resultIndex = 0;
 			playerNames[colIndex] = entry.getKey();
+			int playerScore = 0;
 			for (Results.Result result : entry.getValue()) {
 				String resultWord = result.getWord();
 				if (result.isInvalid()) {
 					resultWord = resultWord + " (invalid)";
 				} else if (result.isCancelled()) {
 					resultWord = "-" + resultWord + "-";
+				} else {
+					playerScore++;
 				}
 				resultTableModel[resultIndex][colIndex] = resultWord;
 				resultIndex++;
+				playerRoundScore.put(entry.getKey(), playerScore);
 			}
 			colIndex++;
 		}
@@ -87,8 +94,10 @@ public class ResultsBoard extends JPanel {
 	protected void fillScorePanel(Map<String, Integer> scores) {
 		scorePanel.removeAll();
 		for (String playerName : scores.keySet()) {
+			int score = playerRoundScore.containsKey(playerName) ? playerRoundScore.get(playerName) : 0;
 			scorePanel.add(new JLabel(playerName + ":"));
-			scorePanel.add(new JLabel(scores.get(playerName).toString()), "wrap");
+			scorePanel.add(new JLabel(scores.get(playerName).toString()));
+			scorePanel.add(new JLabel("(" + score + ")"), "wrap");
 		}
 		validate();
 		repaint();
