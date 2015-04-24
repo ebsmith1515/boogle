@@ -23,6 +23,18 @@ public class BoggleServer extends Thread {
 	private WordChecker wordChecker;
 	private HashMap<Integer, List<String>> wordsOnBoard;
 
+	public void checkNextRound() {
+		boolean allReady = true;
+		for (Player player : players) {
+			if (!player.isReady()) {
+				allReady = false;
+			}
+		}
+		if (allReady) {
+			nextRound();
+		}
+	}
+
 	public enum Commands {
 		START,WORDS,NAME,RESULTS,SCORES,ALLWORDS
 	}

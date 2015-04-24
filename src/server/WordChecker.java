@@ -2,6 +2,7 @@ package server;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class WordChecker {
@@ -54,7 +55,9 @@ public class WordChecker {
 			used.add(pos);
 
 			for (Coord next : nextCoordList(pos)) {
-				if (checkWord(word.substring(1), new Coord(next.row, next.col), used)) {
+				ArrayList<Coord> newList = new ArrayList<Coord>();
+				newList.addAll(used);
+				if (checkWord(word.substring(1), new Coord(next.row, next.col), newList)) {
 					return true;
 				}
 			}

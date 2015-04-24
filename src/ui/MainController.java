@@ -46,7 +46,7 @@ public class MainController {
 	}
 
 	public void nextRoundButtonPressed() {
-		server.nextRound();
+		client.nextRound();
 	}
 
 	public void showScores(String scoreStr) {

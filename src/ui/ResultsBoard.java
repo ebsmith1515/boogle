@@ -36,16 +36,6 @@ public class ResultsBoard extends JPanel {
 		});
 	}
 
-//	private Results makeResults() {
-//		List<String> players = new ArrayList<String>();
-//		players.add("Eric");
-//		players.add("Erin");
-//		Results results = new Results(players);
-//		results.addResult("Eric", "hello");
-//		results.addResult("Erin", "hello2");
-//		return results;
-//	}
-
 	public void fillTable(Results results) {
 		String[][] resultTableModel = new String[results.getMaxRows()][results.getPlayerResults().size()];
 		String[] playerNames = new String[results.getPlayerResults().size()];

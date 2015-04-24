@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static server.BoggleServer.Commands.NAME;
+import static server.BoggleServer.Commands.START;
 import static server.BoggleServer.Commands.WORDS;
 
 public class Player extends Thread {
@@ -20,6 +21,7 @@ public class Player extends Thread {
 	private BoggleServer server;
 	private String playerName;
 	private int score;
+	private boolean ready;
 
 	public Player(int playerNum) {
 		this.playerName = "Player" + playerNum;
@@ -39,6 +41,7 @@ public class Player extends Thread {
 
 	public void nextRound() {
 		enteredWords = null;
+		ready = false;
 	}
 
 	public void send(String message) {
@@ -60,6 +63,9 @@ public class Player extends Thread {
 					server.checkEnd();
 				} else if (line.startsWith(NAME.toString())) {
 					setPlayerName(line.split(BoggleServer.CMD_DELIM)[1]);
+				} else if (line.equals(START.toString())) {
+					setReady(true);
+					server.checkNextRound();
 				}
 			}
 		} catch (IOException e) {
@@ -99,5 +105,13 @@ public class Player extends Thread {
 
 	public void incrementScore() {
 		score++;
+	}
+
+	public boolean isReady() {
+		return ready;
+	}
+
+	public void setReady(boolean ready) {
+		this.ready = ready;
 	}
 }

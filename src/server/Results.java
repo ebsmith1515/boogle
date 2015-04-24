@@ -61,8 +61,10 @@ public class Results {
 			for (Result result : playerWords) {
 				if (!wordList.checkWord(result.word)) {
 					result.invalid = true;
+					System.out.println(result.word + " not in list");
 				} else {
 					if (!wordChecker.checkWord(result.word)) {
+						System.out.println(result.word + " not on board");
 						result.invalid = true;
 					}
 				}

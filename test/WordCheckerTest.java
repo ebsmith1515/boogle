@@ -28,4 +28,16 @@ public class WordCheckerTest {
 		assertFalse(checker.checkWord("TQA".toLowerCase()));
 		assertFalse(checker.checkWord("LAQ".toLowerCase()));
 	}
+
+	@Test
+	public void testFeed() {
+		String board = 	"ONAR";
+		board += 		"LIDU";
+		board += 		"AWPE";
+		board += 		"SHFE";
+		WordChecker checker = new WordChecker(board);
+
+		assertTrue(checker.checkWord("PEED".toLowerCase()));
+		assertTrue(checker.checkWord("FEED".toLowerCase()));
+	}
 }

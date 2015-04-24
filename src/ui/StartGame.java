@@ -1,12 +1,12 @@
 package ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
+
 import net.miginfocom.swing.MigLayout;
 
 public class StartGame extends JPanel {
@@ -19,6 +19,7 @@ public class StartGame extends JPanel {
 	JTextField nameField;
 	JLabel numPlayers;
 	JLabel message;
+	ImageIcon startImage;
 
 	public StartGame(StartGameController controller) {
 		this.startGameController = controller;
@@ -51,10 +52,12 @@ public class StartGame extends JPanel {
 		numPlayers.setVisible(false);
 		message = new JLabel();
 		nameField = new JTextField();
+		startImage = new ImageIcon(this.getClass().getResource("boogleImage.jpg"));
+		setBackground(Color.WHITE);
 	}
 
 	private void initLayout() {
-		add(new Label("Start Game"), "span, center, wrap");
+		add(new JLabel("", startImage, JLabel.CENTER), "span, center, wrap");
 		add(startButton, "split, span");
 		add(joinButton, "wrap");
 		add(new JLabel("Enter name (no spaces):"));

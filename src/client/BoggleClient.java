@@ -108,4 +108,8 @@ public class BoggleClient extends Thread {
 	public void sendName(String name) {
 		out.println(BoggleServer.Commands.NAME.toString() + CMD_DELIM + name);
 	}
+
+	public void nextRound() {
+		out.println(BoggleServer.Commands.START);
+	}
 }
