@@ -16,13 +16,6 @@ public class Results {
 	public static final String RESULTS_DELIM = "%%";
 	public static final String PLAYER_DELIM = "&&";
 
-//	public Results(List<String> players) {
-//		playerResults = new TreeMap<String, List<Result>>();
-//		for (String player : players) {
-//			playerResults.put(player, new ArrayList<Result>());
-//		}
-//	}
-
 	public Results(List<Player> players) {
 		playerResults = new HashMap<String, List<Result>>();
 		for (Player player : players) {

@@ -103,8 +103,8 @@ public class Player extends Thread {
 		return score;
 	}
 
-	public void incrementScore() {
-		score++;
+	public void incrementScore(int amount) {
+		score += amount;
 	}
 
 	public boolean isReady() {

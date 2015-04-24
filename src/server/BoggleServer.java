@@ -195,7 +195,17 @@ public class BoggleServer extends Thread {
 			List<Results.Result> playerResults = results.getPlayerResults().get(player.getPlayerName());
 			for (Results.Result result : playerResults) {
 				if (!result.isInvalid() && !result.isCancelled()) {
-					player.incrementScore();
+					if (result.getWord().length() < 5) {
+						player.incrementScore(1);
+					} else if (result.getWord().length() == 5) {
+						player.incrementScore(2);
+					} else if (result.getWord().length() == 6) {
+						player.incrementScore(3);
+					} else if (result.getWord().length() == 7) {
+						player.incrementScore(5);
+					} else if (result.getWord().length() > 7) {
+						player.incrementScore(11);
+					}
 				}
 			}
 		}
