@@ -173,6 +173,7 @@ public class BoggleServer extends Thread {
 			results = new Results(players);
 			for (Player player : players) {
 				for (String word : player.getEnteredWords()) {
+					removeFromWordsOnBoard(word);
 					results.addResult(player.getPlayerName(), word);
 				}
 			}
@@ -180,6 +181,12 @@ public class BoggleServer extends Thread {
 			calculateScores();
 			sendScores();
 			sendAllWords();
+		}
+	}
+
+	private void removeFromWordsOnBoard(String word) {
+		for (List<String> wordList : wordsOnBoard.values()) {
+			wordList.remove(word);
 		}
 	}
 

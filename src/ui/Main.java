@@ -20,5 +20,6 @@ public class Main {
 				mainController.windowClosing();
 			}
 		});
+		mainController.finalInitUI();
     }
 }

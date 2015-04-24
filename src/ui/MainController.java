@@ -65,4 +65,8 @@ public class MainController {
 	public boolean isServer() {
 		return server != null;
 	}
+
+	public void finalInitUI() {
+		startGameController.startGame.nameField.requestFocusInWindow();
+	}
 }
