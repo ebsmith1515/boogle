@@ -33,6 +33,7 @@ public class ResultsBoardController {
 		resultsBoard.showAllWords(allWords);
 		resultsBoard.nextRoundButton.setEnabled(true);
 		resultsBoard.chatArea.setText("");
+		resultsBoard.chatTextField.requestFocusInWindow();
 	}
 
 	public void nextRoundButtonPressed() {
