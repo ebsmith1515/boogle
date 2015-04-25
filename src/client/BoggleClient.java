@@ -113,6 +113,7 @@ public class BoggleClient extends Thread {
 
 	public void nextRound() {
 		out.println(BoggleServer.Commands.START);
+		sendChat("<ready for next round>");
 	}
 
 	public void sendChat(String text) {

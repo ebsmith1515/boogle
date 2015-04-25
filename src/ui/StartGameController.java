@@ -63,7 +63,7 @@ public class StartGameController {
 			} catch (IOException ignored) {
 
 			}
-			startGame.message.setText("<html>Waiting for others to connect at " + address + ".<br />Click start again to begin.</html>");
+			startGame.message.setText("<html>Waiting for others to connect at " + address + "<br />Click start again to begin.</html>");
 		}
 
 		startGame.startButton.setEnabled(true);

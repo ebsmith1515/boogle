@@ -32,6 +32,7 @@ public class ResultsBoardController {
 	public void showAllWords(String[] allWords) {
 		resultsBoard.showAllWords(allWords);
 		resultsBoard.nextRoundButton.setEnabled(true);
+		resultsBoard.chatArea.setText("");
 	}
 
 	public void nextRoundButtonPressed() {
