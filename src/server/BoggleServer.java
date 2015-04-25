@@ -88,7 +88,8 @@ public class BoggleServer extends Thread {
 	protected void sendScores() {
 		String scoreString = Commands.SCORES.toString();
 		for (Player player : players) {
-			scoreString += CMD_DELIM + player.getPlayerName() + CMD_DELIM + player.getScore();
+			scoreString += CMD_DELIM + player.getPlayerName() +
+					CMD_DELIM + player.getScore() + CMD_DELIM + player.getLastScore();
 		}
 		broadcast(scoreString);
 	}

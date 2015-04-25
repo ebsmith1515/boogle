@@ -21,6 +21,7 @@ public class Player extends Thread {
 	private BoggleServer server;
 	private String playerName;
 	private int score;
+	private int lastScore;
 	private boolean ready;
 
 	public Player(int playerNum) {
@@ -42,6 +43,7 @@ public class Player extends Thread {
 	public void nextRound() {
 		enteredWords = null;
 		ready = false;
+		lastScore = 0;
 	}
 
 	public void send(String message) {
@@ -105,6 +107,7 @@ public class Player extends Thread {
 
 	public void incrementScore(int amount) {
 		score += amount;
+		lastScore += amount;
 	}
 
 	public boolean isReady() {
@@ -113,5 +116,9 @@ public class Player extends Thread {
 
 	public void setReady(boolean ready) {
 		this.ready = ready;
+	}
+
+	public int getLastScore() {
+		return lastScore;
 	}
 }

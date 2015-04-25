@@ -51,11 +51,13 @@ public class MainController {
 
 	public void showScores(String scoreStr) {
 		Map<String, Integer> scoreMap = new TreeMap<String, Integer>();
+		Map<String, Integer> lastScoreMap = new TreeMap<String, Integer>();
 		String[] scoreSplit = scoreStr.split(BoggleServer.CMD_DELIM);
-		for (int i=0; i < scoreSplit.length - 1; i+=2) {
+		for (int i=0; i < scoreSplit.length - 1; i+=3) {
 			scoreMap.put(scoreSplit[i], Integer.parseInt(scoreSplit[i+1]));
+			lastScoreMap.put(scoreSplit[i], Integer.parseInt(scoreSplit[i+2]));
 		}
-		resultsBoardController.fillScorePanel(scoreMap);
+		resultsBoardController.fillScorePanel(scoreMap, lastScoreMap);
 	}
 
 	public void showAllWords(String[] allWords) {

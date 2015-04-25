@@ -16,8 +16,8 @@ public class ResultsBoardController {
 		resultsBoard.repaint();
 	}
 
-	protected void fillScorePanel(Map<String, Integer> scores) {
-		resultsBoard.fillScorePanel(scores);
+	protected void fillScorePanel(Map<String, Integer> scores, Map<String, Integer> lastScores) {
+		resultsBoard.fillScorePanel(scores, lastScores);
 	}
 
 	public void showAllWords(String[] allWords) {
