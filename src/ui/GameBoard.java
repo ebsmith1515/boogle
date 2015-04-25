@@ -2,16 +2,8 @@ package ui;
 
 import net.miginfocom.swing.MigLayout;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
+import javax.swing.*;
 import java.awt.Dimension;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 public class GameBoard extends JPanel {
 

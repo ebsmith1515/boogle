@@ -9,11 +9,8 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import server.BoggleServer;
 import static server.BoggleServer.CMD_DELIM;
-import static server.BoggleServer.Commands.ALLWORDS;
-import static server.BoggleServer.Commands.RESULTS;
-import static server.BoggleServer.Commands.SCORES;
-import static server.BoggleServer.Commands.START;
-import static server.BoggleServer.Commands.WORDS;
+import static server.BoggleServer.Commands.*;
+
 import server.Results;
 import ui.MainController;
 
@@ -59,6 +56,9 @@ public class BoggleClient extends Thread {
 				} else if (line.startsWith(ALLWORDS.toString())) {
 					String wordStr = line.substring((ALLWORDS.toString() + " ").length());
 					mainController.showAllWords(wordStr.split(CMD_DELIM));
+				} else if (line.startsWith(CHAT.toString())) {
+					String[] lineSplit = line.split(CMD_DELIM);
+					mainController.addChatMessage(lineSplit[1], lineSplit[2]);
 				}
 			}
 		} catch (IOException ex) {
@@ -111,5 +111,9 @@ public class BoggleClient extends Thread {
 
 	public void nextRound() {
 		out.println(BoggleServer.Commands.START);
+	}
+
+	public void sendChat(String text) {
+		out.println(BoggleServer.Commands.CHAT + CMD_DELIM + text);
 	}
 }

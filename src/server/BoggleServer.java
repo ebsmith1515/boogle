@@ -35,8 +35,14 @@ public class BoggleServer extends Thread {
 		}
 	}
 
+	public void addChat(Player fromPlayer, String message) {
+		for (Player player : players) {
+			player.sendChat(fromPlayer, message);
+		}
+	}
+
 	public enum Commands {
-		START,WORDS,NAME,RESULTS,SCORES,ALLWORDS
+		START,WORDS,NAME,RESULTS,SCORES, CHAT, ALLWORDS
 	}
 
 	public BoggleServer() {

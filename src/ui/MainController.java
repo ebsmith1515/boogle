@@ -71,4 +71,8 @@ public class MainController {
 	public void finalInitUI() {
 		startGameController.startGame.nameField.requestFocusInWindow();
 	}
+
+	public void addChatMessage(String playerName, String message) {
+		resultsBoardController.addChatMessage(playerName, message);
+	}
 }

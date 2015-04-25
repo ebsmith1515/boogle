@@ -8,9 +8,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import static server.BoggleServer.Commands.NAME;
-import static server.BoggleServer.Commands.START;
-import static server.BoggleServer.Commands.WORDS;
+
+import static server.BoggleServer.CMD_DELIM;
+import static server.BoggleServer.Commands.*;
 
 public class Player extends Thread {
 
@@ -64,10 +64,12 @@ public class Player extends Thread {
 					handleWords(line);
 					server.checkEnd();
 				} else if (line.startsWith(NAME.toString())) {
-					setPlayerName(line.split(BoggleServer.CMD_DELIM)[1]);
+					setPlayerName(line.split(CMD_DELIM)[1]);
 				} else if (line.equals(START.toString())) {
 					setReady(true);
 					server.checkNextRound();
+				} else if (line.startsWith(CHAT.toString())) {
+					server.addChat(this, line.split(CMD_DELIM)[1]);
 				}
 			}
 		} catch (IOException e) {
@@ -84,8 +86,8 @@ public class Player extends Thread {
 			enteredWords = new ArrayList<String>();
 			return;
 		}
-		cmdLine = cmdLine.replaceFirst(WORDS.toString() + BoggleServer.CMD_DELIM, "");
-		String[] cmdSplit = cmdLine.split(BoggleServer.CMD_DELIM);
+		cmdLine = cmdLine.replaceFirst(WORDS.toString() + CMD_DELIM, "");
+		String[] cmdSplit = cmdLine.split(CMD_DELIM);
 		enteredWords = new ArrayList<String>(Arrays.asList(cmdSplit));
 	}
 
@@ -120,5 +122,9 @@ public class Player extends Thread {
 
 	public int getLastScore() {
 		return lastScore;
+	}
+
+	public void sendChat(Player fromPlayer, String message) {
+		output.println(CHAT + CMD_DELIM + fromPlayer.getPlayerName() + CMD_DELIM + message);
 	}
 }

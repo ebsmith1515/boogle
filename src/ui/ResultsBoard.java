@@ -4,7 +4,6 @@ import net.miginfocom.swing.MigLayout;
 import server.Results;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +17,15 @@ public class ResultsBoard extends JPanel {
 	private JList<String> allWordsList;
 	protected LetterGrid letterGrid;
 	protected JButton nextRoundButton;
+	protected JTextField chatTextField;
+	protected JTextArea chatArea;
 
 	public ResultsBoard(final ResultsBoardController controller) {
 		letterGrid = new LetterGrid();
 		nextRoundButton = new JButton("Next Round");
+		chatTextField = new JTextField();
+		chatArea = new JTextArea();
+		chatArea.setEditable(false);
 		initLayout();
 		nextRoundButton.addActionListener(new ActionListener() {
 			@Override
@@ -72,8 +76,9 @@ public class ResultsBoard extends JPanel {
 		add(listScroll, "wrap");
 		add(playerWordsScroll, "wrap");
 		add(nextRoundButton, "wrap");
-		add(scorePanel);
-		//add(new JScrollPane(scoreTable), BorderLayout.SOUTH);
+		add(scorePanel, "wrap");
+		add(chatTextField, "growx, wrap");
+		add(new JScrollPane(chatArea), "growx, hmin 100");
 	}
 
 	protected void showAllWords(String[] wordList) {
@@ -89,27 +94,5 @@ public class ResultsBoard extends JPanel {
 		}
 		validate();
 		repaint();
-	}
-
-	private static class ResultsTableModel extends AbstractTableModel {
-
-		public ResultsTableModel() {
-
-		}
-
-		@Override
-		public int getRowCount() {
-			return 0;
-		}
-
-		@Override
-		public int getColumnCount() {
-			return 0;
-		}
-
-		@Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			return null;
-		}
 	}
 }
