@@ -1,5 +1,7 @@
 package ui;
 
+import net.miginfocom.swing.MigLayout;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -24,12 +26,11 @@ public class GameBoard extends JPanel {
 
 	public GameBoard(GameBoardController gameBoardController) {
 		this.gameBoardController = gameBoardController;
-		initLayout();
+		initComponents();
+		initLayouts();
 	}
 
-	private void initLayout() {
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new BorderLayout());
+	private void initComponents() {
 		wordEnter = new JTextField();
 		enteredWordsArea = new JTextArea();
 		enteredWordsArea.setEditable(false);
@@ -37,18 +38,14 @@ public class GameBoard extends JPanel {
 		letterGrid = new LetterGrid();
 		timer = new JLabel();
 		message = new JLabel();
+	}
 
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		JPanel letterGridContainer = new JPanel();
-		letterGridContainer.setLayout(new BoxLayout(letterGridContainer, BoxLayout.Y_AXIS));
-		letterGridContainer.add(letterGrid);
-		Component box = Box.createVerticalGlue();
-		letterGridContainer.add(box);
-		topPanel.add(letterGridContainer, BorderLayout.WEST);
-		topPanel.add(enteredWordsScroll = new JScrollPane(enteredWordsArea), BorderLayout.CENTER);
-		add(timer);
-		add(topPanel);
-		add(message);
-		add(wordEnter);
+	private void initLayouts() {
+		setLayout(new MigLayout("fill"));
+		add(timer, "split3, center, flowy");
+		add(letterGrid, "center");
+		add(message, "center");
+		add(enteredWordsScroll = new JScrollPane(enteredWordsArea), "growx, wrap");
+		add(wordEnter, "growx, span");
 	}
 }
