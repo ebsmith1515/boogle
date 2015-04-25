@@ -68,7 +68,8 @@ public class ResultsBoard extends JPanel {
 		playerWordsScroll = new JScrollPane();
 		playerWordsScroll.setSize(300, 300);
 		add(letterGrid);
-		add(listScroll, "spany, wrap");
+		add(new JLabel("Missed words"), "split, flowy, spany");
+		add(listScroll, "wrap");
 		add(playerWordsScroll, "wrap");
 		add(nextRoundButton, "wrap");
 		add(scorePanel);
