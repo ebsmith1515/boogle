@@ -57,8 +57,10 @@ public class BoggleClient extends Thread {
 					String wordStr = line.substring((ALLWORDS.toString() + " ").length());
 					mainController.showAllWords(wordStr.split(CMD_DELIM));
 				} else if (line.startsWith(CHAT.toString())) {
-					String[] lineSplit = line.split(CMD_DELIM);
-					mainController.addChatMessage(lineSplit[1], lineSplit[2]);
+					String[] lineSplit = line.split(CMD_DELIM, 2);
+					String player = lineSplit[1].split(BoggleServer.CHAT_DELIM)[0];
+					String message = lineSplit[1].split(BoggleServer.CHAT_DELIM)[1];
+					mainController.addChatMessage(player, message);
 				}
 			}
 		} catch (IOException ex) {

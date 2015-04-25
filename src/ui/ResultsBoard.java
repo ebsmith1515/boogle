@@ -26,6 +26,7 @@ public class ResultsBoard extends JPanel {
 		chatTextField = new JTextField();
 		chatArea = new JTextArea();
 		chatArea.setEditable(false);
+		chatArea.setLineWrap(true);
 		initLayout();
 		nextRoundButton.addActionListener(new ActionListener() {
 			@Override
@@ -73,7 +74,7 @@ public class ResultsBoard extends JPanel {
 		playerWordsScroll.setSize(300, 300);
 		add(letterGrid);
 		add(new JLabel("Missed words"), "split, flowy, spany");
-		add(listScroll, "wrap");
+		add(listScroll, "wrap, growy");
 		add(playerWordsScroll, "wrap");
 		add(nextRoundButton, "wrap");
 		add(scorePanel, "wrap");

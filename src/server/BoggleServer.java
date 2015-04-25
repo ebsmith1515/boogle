@@ -15,6 +15,7 @@ public class BoggleServer extends Thread {
 	private static final int GAME_SECONDS = 120;
 	boolean waitingForPlayers = true;
 	public static final String CMD_DELIM = " ";
+	public static final String CHAT_DELIM = "%%";
 
 	private List<Player> players;
 	protected StartGameController startGameController;

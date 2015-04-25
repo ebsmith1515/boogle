@@ -69,7 +69,7 @@ public class Player extends Thread {
 					setReady(true);
 					server.checkNextRound();
 				} else if (line.startsWith(CHAT.toString())) {
-					server.addChat(this, line.split(CMD_DELIM)[1]);
+					server.addChat(this, line.split(CMD_DELIM, 2)[1]);
 				}
 			}
 		} catch (IOException e) {
@@ -125,6 +125,6 @@ public class Player extends Thread {
 	}
 
 	public void sendChat(Player fromPlayer, String message) {
-		output.println(CHAT + CMD_DELIM + fromPlayer.getPlayerName() + CMD_DELIM + message);
+		output.println(CHAT + CMD_DELIM + fromPlayer.getPlayerName() + BoggleServer.CHAT_DELIM + message);
 	}
 }
