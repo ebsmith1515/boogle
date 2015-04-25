@@ -124,7 +124,7 @@ public class Player extends Thread {
 		return lastScore;
 	}
 
-	public void sendChat(Player fromPlayer, String message) {
-		output.println(CHAT + CMD_DELIM + fromPlayer.getPlayerName() + BoggleServer.CHAT_DELIM + message);
+	public void sendChat(String fromPlayer, String message) {
+		output.println(CHAT + CMD_DELIM + fromPlayer + BoggleServer.CHAT_DELIM + message);
 	}
 }

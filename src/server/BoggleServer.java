@@ -3,10 +3,8 @@ package server;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+
 import ui.StartGameController;
 
 public class BoggleServer extends Thread {
@@ -37,8 +35,12 @@ public class BoggleServer extends Thread {
 	}
 
 	public void addChat(Player fromPlayer, String message) {
+		addChat(fromPlayer.getPlayerName(), message);
+	}
+
+	private void addChat(String playerName, String message) {
 		for (Player player : players) {
-			player.sendChat(fromPlayer, message);
+			player.sendChat(playerName, message);
 		}
 	}
 
@@ -101,12 +103,32 @@ public class BoggleServer extends Thread {
 		broadcast(scoreString);
 	}
 
+	private int secondsLeft;
 	public void nextRound() {
-		sentResults = false;
-		for (Player player : players) {
-			player.nextRound();
-		}
-		startGame();
+		secondsLeft = 5;
+
+		final Timer repeatingTimer = new Timer();
+		repeatingTimer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				addChat("<The Server>", "Starting game: " + secondsLeft + "...");
+				secondsLeft--;
+				if (secondsLeft < 0) {
+					repeatingTimer.cancel();
+				}
+			}
+		}, 1000, 1000);
+
+		new Timer().schedule(new TimerTask() {
+			@Override
+			public void run() {
+				sentResults = false;
+				for (Player player : players) {
+					player.nextRound();
+				}
+				startGame();
+			}
+		}, 6000);
 	}
 
 	public void addPlayer(Player player) {
