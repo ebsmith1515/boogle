@@ -18,6 +18,12 @@ public class StartGameController {
 		startGame.ipField.setText("192.168.1.134");
 	}
 
+	public void resetGame() {
+		startGame.message.setText("");
+		startGame.joinButton.setEnabled(true);
+		startGame.startButton.setEnabled(true);
+	}
+
 	public void joinGame() {
 		startGame.message.setText("");
 		mainController.client = new BoggleClient(mainController);

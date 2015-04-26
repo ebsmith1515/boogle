@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,7 +57,7 @@ public class Player extends Thread {
 	public void run() {
 		System.out.println("Starting player thread.");
 		try {
-			while (true) {
+			while (server.isRunning()) {
 				String line = input.readLine();
 				if (line.startsWith("PING")) {
 					output.println("WELCOME");
@@ -72,12 +73,15 @@ public class Player extends Thread {
 					server.addChat(this, line.split(CMD_DELIM, 2)[1]);
 				}
 			}
+		} catch (SocketException ex) {
+			System.out.println("socket closed");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
 				socket.close();
-			} catch (IOException ignored) {}
+			} catch (IOException ignored) {
+			}
 		}
 	}
 
@@ -126,5 +130,13 @@ public class Player extends Thread {
 
 	public void sendChat(String fromPlayer, String message) {
 		output.println(CHAT + CMD_DELIM + fromPlayer + BoggleServer.CHAT_DELIM + message);
+	}
+
+	public void stopGame() {
+		try {
+			socket.close();
+		} catch (IOException e) {
+			System.out.println("error closing socket.");
+		}
 	}
 }

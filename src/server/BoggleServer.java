@@ -3,6 +3,7 @@ package server;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.net.SocketException;
 import java.util.*;
 
 import ui.StartGameController;
@@ -15,12 +16,14 @@ public class BoggleServer extends Thread {
 	public static final String CMD_DELIM = " ";
 	public static final String CHAT_DELIM = "%%";
 
+	private ServerSocket listener;
 	private List<Player> players;
 	protected StartGameController startGameController;
 	private Results results;
 	private String gameLetters;
 	private WordChecker wordChecker;
 	private HashMap<Integer, List<String>> wordsOnBoard;
+	private boolean running;
 
 	public void checkNextRound() {
 		boolean allReady = true;
@@ -45,7 +48,7 @@ public class BoggleServer extends Thread {
 	}
 
 	public enum Commands {
-		START,WORDS,NAME,RESULTS,SCORES, CHAT, ALLWORDS
+		START,WORDS,NAME,RESULTS,SCORES,CHAT,ALLWORDS
 	}
 
 	public BoggleServer() {
@@ -58,14 +61,27 @@ public class BoggleServer extends Thread {
 
 	@Override
 	public void run() {
-		resetGame();
+		newGame();
 	}
 
-	public void resetGame() {
+	public void stopBoggle() {
+		running = false;
+		try {
+			listener.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (Player player : players) {
+			player.stopGame();
+		}
+	}
+
+	public void newGame() {
+		running = true;
 		players = new ArrayList<Player>();
 		results = null;
 		try {
-			ServerSocket listener = new ServerSocket(PORT, 0, new InetSocketAddress("0.0.0.0", PORT).getAddress());
+			listener = new ServerSocket(PORT, 0, new InetSocketAddress("0.0.0.0", PORT).getAddress());
 			int playerNum = 1;
 			while (waitingForPlayers) {
 				Player player = new Player(listener.accept(), this, playerNum++);
@@ -73,6 +89,8 @@ public class BoggleServer extends Thread {
 				addPlayer(player);
 				System.out.println("Adding new player");
 			}
+		} catch (SocketException ex) {
+			System.out.println("Socket closed");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -248,5 +266,9 @@ public class BoggleServer extends Thread {
 
 	public Results getResults() {
 		return results;
+	}
+
+	public boolean isRunning() {
+		return running;
 	}
 }

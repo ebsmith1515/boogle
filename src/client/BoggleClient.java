@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.List;
 import javax.swing.SwingUtilities;
 import server.BoggleServer;
@@ -18,6 +19,7 @@ public class BoggleClient extends Thread {
 
 	private BufferedReader in;
 	private PrintWriter out;
+	private Socket socket;
 	MainController mainController;
 	private boolean running = true;
 
@@ -63,6 +65,8 @@ public class BoggleClient extends Thread {
 					mainController.addChatMessage(player, message);
 				}
 			}
+		} catch (SocketException ex) {
+			System.out.println("socket closed");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -80,7 +84,7 @@ public class BoggleClient extends Thread {
 		}
 		boolean success = false;
 		try {
-			Socket socket = new Socket(serverAddress, BoggleServer.PORT);
+			socket = new Socket(serverAddress, BoggleServer.PORT);
 			in = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
@@ -105,6 +109,11 @@ public class BoggleClient extends Thread {
 
 	public void stopBoggle() {
 		running = false;
+		try {
+			socket.close();
+		} catch (IOException e) {
+			System.out.println("error closing socket.");
+		}
 	}
 
 	public void sendName(String name) {

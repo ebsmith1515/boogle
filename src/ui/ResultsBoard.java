@@ -19,8 +19,10 @@ public class ResultsBoard extends JPanel {
 	protected JButton nextRoundButton;
 	protected JTextField chatTextField;
 	protected JTextArea chatArea;
+	private JButton resetButton;
 
 	public ResultsBoard(final ResultsBoardController controller) {
+		resetButton = new JButton("Reset");
 		letterGrid = new LetterGrid();
 		nextRoundButton = new JButton("Next Round");
 		chatTextField = new JTextField();
@@ -32,6 +34,12 @@ public class ResultsBoard extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.nextRoundButtonPressed();
+			}
+		});
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.resetButtonPressed();
 			}
 		});
 	}
@@ -76,7 +84,8 @@ public class ResultsBoard extends JPanel {
 		add(new JLabel("Missed words"), "split, flowy, spany");
 		add(listScroll, "wrap, growy");
 		add(playerWordsScroll, "wrap");
-		add(nextRoundButton, "wrap");
+		add(nextRoundButton, "split");
+		add(resetButton, "wrap");
 		add(scorePanel, "wrap");
 		add(chatTextField, "growx, wrap");
 		add(new JScrollPane(chatArea), "growx, hmin 100");

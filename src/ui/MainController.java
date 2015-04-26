@@ -75,4 +75,15 @@ public class MainController {
 	public void addChatMessage(String playerName, String message) {
 		resultsBoardController.addChatMessage(playerName, message);
 	}
+
+	public void reset() {
+		if (isServer()) {
+			server.stopBoggle();
+			server = null;
+		}
+		client.stopBoggle();
+		client = null;
+		showCard("StartGame");
+		startGameController.resetGame();
+	}
 }

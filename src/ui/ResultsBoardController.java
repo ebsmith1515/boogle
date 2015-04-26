@@ -44,4 +44,8 @@ public class ResultsBoardController {
 	public void addChatMessage(String playerName, String message) {
 		resultsBoard.chatArea.setText(playerName + ": " + message + "\n" + resultsBoard.chatArea.getText());
 	}
+
+	public void resetButtonPressed() {
+		mainController.reset();
+	}
 }

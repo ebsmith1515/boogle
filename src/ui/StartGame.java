@@ -43,7 +43,7 @@ public class StartGame extends JPanel {
 
 	private void initComponents() {
 		setLayout(new MigLayout("fillx"));
-		startButton = new JButton("Start Game");
+		startButton = new JButton("Start Server");
 		joinButton = new JButton("Join Game");
 		ipField = new JTextField();
 		numPlayers = new JLabel();
