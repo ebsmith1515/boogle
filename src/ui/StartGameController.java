@@ -22,6 +22,7 @@ public class StartGameController {
 		startGame.message.setText("");
 		startGame.joinButton.setEnabled(true);
 		startGame.startButton.setEnabled(true);
+		startGame.numPlayers.setText("");
 	}
 
 	public void joinGame() {
