@@ -59,18 +59,20 @@ public class Player extends Thread {
 		try {
 			while (server.isRunning()) {
 				String line = input.readLine();
-				if (line.startsWith("PING")) {
-					output.println("WELCOME");
-				} else if (line.startsWith(WORDS.toString())) {
-					handleWords(line);
-					server.checkEnd();
-				} else if (line.startsWith(NAME.toString())) {
-					setPlayerName(line.split(CMD_DELIM)[1]);
-				} else if (line.equals(START.toString())) {
-					setReady(true);
-					server.checkNextRound();
-				} else if (line.startsWith(CHAT.toString())) {
-					server.addChat(this, line.split(CMD_DELIM, 2)[1]);
+				if (line != null) {
+					if (line.startsWith("PING")) {
+						output.println("WELCOME");
+					} else if (line.startsWith(WORDS.toString())) {
+						handleWords(line);
+						server.checkEnd();
+					} else if (line.startsWith(NAME.toString())) {
+						setPlayerName(line.split(CMD_DELIM)[1]);
+					} else if (line.equals(START.toString())) {
+						setReady(true);
+						server.checkNextRound();
+					} else if (line.startsWith(CHAT.toString())) {
+						server.addChat(this, line.split(CMD_DELIM, 2)[1]);
+					}
 				}
 			}
 		} catch (SocketException ex) {

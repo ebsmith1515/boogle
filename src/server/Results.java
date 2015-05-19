@@ -53,12 +53,12 @@ public class Results {
 			List<Result> playerWords = playerResults.get(playerName);
 			for (Result result : playerWords) {
 				if (!wordList.checkWord(result.word)) {
-					result.invalid = true;
+					result.invalidDictionary = true;
 					System.out.println(result.word + " not in list");
 				} else {
 					if (!wordChecker.checkWord(result.word)) {
 						System.out.println(result.word + " not on board");
-						result.invalid = true;
+						result.invalidBoard = true;
 					}
 				}
 			}
@@ -117,7 +117,8 @@ public class Results {
 		private static final String INNER_RESULT_DELIM = "_";
 		final private String word;
 		private boolean cancelled = false;
-		private boolean invalid = false;
+		private boolean invalidBoard = false;
+		private boolean invalidDictionary = false;
 
 		public Result(String word) {
 			this.word = word;
@@ -125,10 +126,10 @@ public class Results {
 
 		@Override
 		public int compareTo(Result o) {
-			if (this.invalid && !o.invalid) {
+			if (this.isInvalid() && !o.isInvalid()) {
 				return 1;
 			}
-			if (o.invalid && !this.invalid) {
+			if (o.isInvalid() && !this.isInvalid()) {
 				return -1;
 			}
 			if (this.cancelled && !o.cancelled) {
@@ -148,7 +149,7 @@ public class Results {
 				result.setCancelled(true);
 			}
 			if (strList.contains("invalid")) {
-				result.setInvalid(true);
+				result.setInvalidDictionary(true);
 			}
 			return result;
 		}
@@ -156,7 +157,7 @@ public class Results {
 		protected String serialize() {
 			String str = word;
 			if (cancelled) str += INNER_RESULT_DELIM + "cancelled";
-			if (invalid) str += INNER_RESULT_DELIM + "invalid";
+			if (isInvalid()) str += INNER_RESULT_DELIM + "invalid";
 			return str;
 		}
 
@@ -173,11 +174,23 @@ public class Results {
 		}
 
 		public boolean isInvalid() {
-			return invalid;
+			return invalidBoard || invalidDictionary;
 		}
 
-		public void setInvalid(boolean invalid) {
-			this.invalid = invalid;
+		public boolean isInvalidBoard() {
+			return invalidBoard;
+		}
+
+		public void setInvalidBoard(boolean invalidBoard) {
+			this.invalidBoard = invalidBoard;
+		}
+
+		public boolean isInvalidDictionary() {
+			return invalidDictionary;
+		}
+
+		public void setInvalidDictionary(boolean invalidDictionary) {
+			this.invalidDictionary = invalidDictionary;
 		}
 	}
 }

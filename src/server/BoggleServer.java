@@ -254,6 +254,8 @@ public class BoggleServer extends Thread {
 					} else if (result.getWord().length() > 7) {
 						player.incrementScore(11);
 					}
+				} else if (result.isInvalidDictionary()) {
+					player.incrementScore(-1);
 				}
 			}
 		}
