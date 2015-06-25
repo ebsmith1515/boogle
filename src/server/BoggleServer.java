@@ -12,6 +12,7 @@ public class BoggleServer extends Thread {
 
 	public static final int PORT = 9191;
 	private static final int GAME_SECONDS = 120;
+	private static final int MIN_WORDS_ON_BOARD = 50;
 	boolean waitingForPlayers = true;
 	public static final String CMD_DELIM = " ";
 	public static final String CHAT_DELIM = "%%";
@@ -23,6 +24,7 @@ public class BoggleServer extends Thread {
 	private String gameLetters;
 	private WordChecker wordChecker;
 	private HashMap<Integer, List<String>> wordsOnBoard;
+	private int wordsOnBoardCount;
 	private boolean running;
 
 	public void checkNextRound() {
@@ -159,38 +161,43 @@ public class BoggleServer extends Thread {
 	}
 
 	public void startGame() {
-		gameLetters = new LetterFactory().getLetterList();
-		wordChecker = new WordChecker(gameLetters);
+		boolean good = false;
+		while (!good) {
+			System.out.println("Getting letters");
+			gameLetters = new LetterFactory().getLetterList();
+			wordChecker = new WordChecker(gameLetters);
+			findAllWordsThread();
+			good = wordsOnBoardCount > MIN_WORDS_ON_BOARD;
+			System.out.println("Found " + wordsOnBoardCount + "words");
+		}
+
 		int gameSeconds = GAME_SECONDS;
 		if (players.get(0).getPlayerName().startsWith("_SHORT")) {
 			gameSeconds = Integer.parseInt(players.get(0).getPlayerName().substring(6));
 		}
 
 		broadcast(Commands.START.toString() + CMD_DELIM + gameSeconds + CMD_DELIM + gameLetters);
-		findAllWordsThread();
 	}
 
+	//TODO: option for min words on UI
 	private void findAllWordsThread() {
-		new Thread() {
-			@Override
-			public void run() {
-				long startTime = System.currentTimeMillis();
-				wordsOnBoard = new HashMap<Integer, List<String>>();
-				try {
-					WordList wordList = WordList.getInstance();
-					for (String word : wordList.dictionary.keySet()) {
-						if (word.length() > 2 && wordChecker.checkWord(word)) {
-							putInWordsOnBoard(word.length(), word);
-						}
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
+		wordsOnBoardCount = 0;
+		long startTime = System.currentTimeMillis();
+		wordsOnBoard = new HashMap<Integer, List<String>>();
+		try {
+			WordList wordList = WordList.getInstance();
+			for (String word : wordList.dictionary.keySet()) {
+				if (word.length() > 2 && wordChecker.checkWord(word)) {
+					putInWordsOnBoard(word.length(), word);
+					wordsOnBoardCount++;
 				}
-
-				long seconds = (System.currentTimeMillis() - startTime) / 1000;
-				System.out.println("Ran findAllWords in " + seconds + " seconds.");
 			}
-		}.start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		long seconds = (System.currentTimeMillis() - startTime) / 1000;
+		System.out.println("Ran findAllWords in " + seconds + " seconds.");
 	}
 
 	private void putInWordsOnBoard(int num, String word) {

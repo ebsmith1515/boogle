@@ -59,6 +59,7 @@ public class BoggleClient extends Thread {
 					String wordStr = line.substring((ALLWORDS.toString() + " ").length());
 					mainController.showAllWords(wordStr.split(CMD_DELIM));
 				} else if (line.startsWith(CHAT.toString())) {
+					System.out.println(line);
 					String[] lineSplit = line.split(CMD_DELIM, 2);
 					String player = lineSplit[1].split(BoggleServer.CHAT_DELIM)[0];
 					String message = lineSplit[1].split(BoggleServer.CHAT_DELIM)[1];

@@ -122,6 +122,7 @@ public class Player extends Thread {
 		return ready;
 	}
 
+
 	public void setReady(boolean ready) {
 		this.ready = ready;
 	}
