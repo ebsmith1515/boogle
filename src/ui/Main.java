@@ -13,6 +13,7 @@ public class Main {
 		MainWindow mainWindow = mainController.mainWindow;
 		frame.setContentPane(mainWindow);
 		frame.setVisible(true);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
