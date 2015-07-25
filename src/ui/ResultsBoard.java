@@ -105,4 +105,8 @@ public class ResultsBoard extends JPanel {
 		validate();
 		repaint();
 	}
+
+	public JScrollPane getPlayerWordsScroll() {
+		return playerWordsScroll;
+	}
 }
