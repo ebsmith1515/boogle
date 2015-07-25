@@ -3,6 +3,7 @@ package ui;
 import client.BoggleClient;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.prefs.Preferences;
 import javax.swing.SwingUtilities;
 import server.BoggleServer;
 
@@ -15,7 +16,21 @@ public class StartGameController {
 	public StartGameController(MainController mainController) {
 		startGame = new StartGame(this);
 		this.mainController = mainController;
-		startGame.ipField.setText("192.168.1.134");
+		String lastUsed = getLastUsedIP();
+		String tooltip = "Get this from the user that is starting the server. Something like '192.123.4.56'. Not needed if you are starting the server.";
+		startGame.ipField.setToolTipText(tooltip);
+		startGame.ipLabel.setToolTipText(tooltip);
+		if (lastUsed != null) {
+			startGame.ipField.setText(lastUsed);
+		}
+	}
+
+	private String getLastUsedIP() {
+		return Preferences.userNodeForPackage(this.getClass()).get("ip", null);
+	}
+
+	private void saveIP(String ip) {
+		Preferences.userNodeForPackage(this.getClass()).put("ip", ip);
 	}
 
 	public void resetGame() {
@@ -37,6 +52,9 @@ public class StartGameController {
 			startGame.message.setText("Please enter a name.");
 		} else {
 			if (mainController.client.connect(ipAddress)) {
+				if (ipAddress != null) {
+					saveIP(ipAddress);
+				}
 				startGame.joinButton.setEnabled(false);
 				startGame.startButton.setEnabled(false);
 				mainController.client.start();
@@ -59,7 +77,6 @@ public class StartGameController {
 				startGame();
 				return;
 			}
-			startGame.ipField.setText("localhost");
 			mainController.server = new BoggleServer(this);
 			mainController.server.start();
 			startGame.numPlayers.setVisible(true);
@@ -70,7 +87,7 @@ public class StartGameController {
 			} catch (IOException ignored) {
 
 			}
-			startGame.message.setText("<html>Waiting for others to connect at " + address + "<br />Click start again to begin.</html>");
+			startGame.message.setText("<html>Waiting for others to connect at <b>" + address + "</b><br />Click start again to begin.</html>");
 		}
 
 		startGame.startButton.setEnabled(true);

@@ -14,6 +14,7 @@ public class StartGame extends JPanel {
 	JButton startButton;
 	JButton joinButton;
 	JTextField ipField;
+	JLabel ipLabel;
 	JTextField nameField;
 	JLabel numPlayers;
 	JLabel message;
@@ -60,7 +61,8 @@ public class StartGame extends JPanel {
 		add(joinButton, "wrap");
 		add(new JLabel("Enter name (no spaces):"));
 		add(nameField, "wrap, growx");
-		add(new JLabel("IP"));
+		ipLabel = new JLabel("IP to join (hover for help)");
+		add(ipLabel);
 		add(ipField, "wrap, growx");
 		add(numPlayers, "span, wrap");
 		add(message, "span");
