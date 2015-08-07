@@ -80,6 +80,7 @@ public class StartGameController {
 			mainController.server = new BoggleServer(this);
 			mainController.server.start();
 			startGame.numPlayers.setVisible(true);
+			startGame.ipField.setText(null);
 			joinGame();
 			String address = "unknown";
 			try {
