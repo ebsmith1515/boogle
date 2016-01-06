@@ -13,7 +13,9 @@ import java.util.Map;
 public class ResultsBoard extends JPanel {
 
 	private JPanel scorePanel;
+	protected JLabel missedWordsLabel;
 	protected JScrollPane playerWordsScroll;
+	protected JScrollPane allWorldsListScroll;
 	private JList<String> allWordsList;
 	protected LetterGrid letterGrid;
 	protected JButton nextRoundButton;
@@ -71,22 +73,22 @@ public class ResultsBoard extends JPanel {
 		allWordsList = new JList<String>();
 		allWordsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		allWordsList.setLayoutOrientation(JList.VERTICAL);
-		JScrollPane listScroll = new JScrollPane(allWordsList);
-		listScroll.setPreferredSize(new Dimension(300, 400));
-		scorePanel = new JPanel(new MigLayout("fillx"));
+		allWorldsListScroll = new JScrollPane(allWordsList);
+		allWorldsListScroll.setPreferredSize(new Dimension(300, 400));
+		scorePanel = new JPanel(new MigLayout("fillx, gapx 20px"));
 		for (int i=0; i < 6; i++) {
 			scorePanel.add(new JLabel("_"));
 		}
-		setLayout(new MigLayout("fillx"));
+		setLayout(new MigLayout("fillx, hidemode 3"));
 		playerWordsScroll = new JScrollPane();
 		playerWordsScroll.setSize(300, 300);
 		add(letterGrid);
-		add(new JLabel("Missed words"), "split, flowy, spany");
-		add(listScroll, "wrap, growy");
+		add(missedWordsLabel = new JLabel("Missed words"), "split, flowy, spany");
+		add(allWorldsListScroll, "wrap, growy");
 		add(playerWordsScroll, "wrap");
+		add(scorePanel, "wrap");
 		add(nextRoundButton, "split");
 		add(resetButton, "wrap");
-		add(scorePanel, "wrap");
 		add(chatTextField, "growx, wrap");
 		add(new JScrollPane(chatArea), "growx, hmin 100");
 	}
@@ -97,10 +99,13 @@ public class ResultsBoard extends JPanel {
 
 	protected void fillScorePanel(Map<String, Integer> scores, Map<String, Integer> lastScores) {
 		scorePanel.removeAll();
+		scorePanel.add(new JLabel("Player"));
+		scorePanel.add(new JLabel("Last Score"));
+		scorePanel.add(new JLabel("Total Score"), "wrap");
 		for (String playerName : scores.keySet()) {
 			scorePanel.add(new JLabel(playerName + ":"));
 			scorePanel.add(new JLabel(scores.get(playerName).toString()));
-			scorePanel.add(new JLabel("(" + lastScores.get(playerName).toString() + ")"), "wrap");
+			scorePanel.add(new JLabel(lastScores.get(playerName).toString()), "wrap");
 		}
 		validate();
 		repaint();

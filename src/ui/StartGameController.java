@@ -25,7 +25,7 @@ public class StartGameController {
 		startGame.message.setText("");
 		mainController.client = new BoggleClient(mainController);
 //		String ipAddress = "65.60.197.125";
-		String ipAddress = "192.168.1.102";
+		String ipAddress = "localhost";
 		if (getName().equals("")) {
 			startGame.message.setText("Please enter a name.");
 		} else {

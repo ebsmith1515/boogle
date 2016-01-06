@@ -29,6 +29,8 @@ public class ResultsBoardController {
 	public void showOrHideThings() {
 		resultsBoard.playerWordsScroll.setVisible(!firstGame);
 		resultsBoard.letterGrid.setVisible(!firstGame);
+		resultsBoard.allWorldsListScroll.setVisible(!firstGame);
+		resultsBoard.missedWordsLabel.setVisible(!firstGame);
 	}
 
 	protected void setLetters(String letters) {

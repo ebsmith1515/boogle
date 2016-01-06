@@ -173,23 +173,25 @@ public class BoggleServer extends Thread {
 	}
 
 	public void startGame() {
-		waitingForPlayers = false;
-		boolean good = false;
-		while (!good) {
-			System.out.println("Getting letters");
-			gameLetters = new LetterFactory().getLetterList();
-			wordChecker = new WordChecker(gameLetters);
-			findAllWordsThread();
-			good = wordsOnBoardCount > MIN_WORDS_ON_BOARD;
-			System.out.println("Found " + wordsOnBoardCount + "words");
-		}
+		if (!players.isEmpty()) {
+			waitingForPlayers = false;
+			boolean good = false;
+			while (!good) {
+				System.out.println("Getting letters");
+				gameLetters = new LetterFactory().getLetterList();
+				wordChecker = new WordChecker(gameLetters);
+				findAllWordsThread();
+				good = wordsOnBoardCount > MIN_WORDS_ON_BOARD;
+				System.out.println("Found " + wordsOnBoardCount + "words");
+			}
 
-		int gameSeconds = GAME_SECONDS;
-		if (players.get(0).getPlayerName().startsWith("_SHORT")) {
-			gameSeconds = Integer.parseInt(players.get(0).getPlayerName().substring(6));
-		}
+			int gameSeconds = GAME_SECONDS;
+			if (players.get(0).getPlayerName().startsWith("_SHORT")) {
+				gameSeconds = Integer.parseInt(players.get(0).getPlayerName().substring(6));
+			}
 
-		broadcast(Commands.START.toString() + CMD_DELIM + gameSeconds + CMD_DELIM + gameLetters);
+			broadcast(Commands.START.toString() + CMD_DELIM + gameSeconds + CMD_DELIM + gameLetters);
+		}
 	}
 
 	//TODO: option for min words on UI
