@@ -109,11 +109,13 @@ public class BoggleClient extends Thread {
 
 	public void stopBoggle() {
 		running = false;
-		try {
-			out.println(END.toString());
-			socket.close();
-		} catch (IOException e) {
-			System.out.println("error closing socket.");
+		if (out != null) {
+			try {
+				out.println(END.toString());
+				socket.close();
+			} catch (IOException e) {
+				System.out.println("error closing socket.");
+			}
 		}
 	}
 

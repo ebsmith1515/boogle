@@ -12,6 +12,8 @@ public class StartGame extends JPanel {
 	private StartGameController startGameController;
 
 	JButton enterButton;
+	JTextField addressField;
+	JButton advancedButton;
 	JTextField nameField;
 	JLabel message;
 	ImageIcon startImage;
@@ -30,11 +32,20 @@ public class StartGame extends JPanel {
 				startGameController.joinGame();
 			}
 		});
+		advancedButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				addressField.setVisible(!addressField.isVisible());
+			}
+		});
 	}
 
 	private void initComponents() {
-		setLayout(new MigLayout("fillx"));
+		setLayout(new MigLayout("fillx, filly"));
 		enterButton = new JButton("Enter");
+		advancedButton = new JButton("Advanced");
+		addressField = new JTextField();
+		addressField.setVisible(false);
 		message = new JLabel();
 		nameField = new JTextField();
 		startImage = new ImageIcon(this.getClass().getResource("boogleImage.jpg"));
@@ -46,7 +57,8 @@ public class StartGame extends JPanel {
 		add(enterButton, "span, wrap");
 		add(new JLabel("Enter name (no spaces):"));
 		add(nameField, "wrap, growx");
-		add(message, "span");
-		//message.setPreferredSize(new Dimension(600, 600));
+		add(message, "span, wrap, pushy, top");
+		add(advancedButton);
+		add(addressField);
 	}
 }

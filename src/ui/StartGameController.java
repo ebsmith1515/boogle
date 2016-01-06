@@ -11,9 +11,20 @@ public class StartGameController {
 
 	protected StartGame startGame;
 
+	private static final String PREF_ADDRESS = "ADDRESS";
+
 	public StartGameController(MainController mainController) {
 		startGame = new StartGame(this);
 		this.mainController = mainController;
+		startGame.addressField.setText(getServerAddress());
+	}
+
+	private String getServerAddress() {
+		return Preferences.userNodeForPackage(StartGameController.class).get(PREF_ADDRESS, "65.60.197.125");
+	}
+
+	private void saveServerAddress(String address) {
+		Preferences.userNodeForPackage(StartGameController.class).put(PREF_ADDRESS, address);
 	}
 
 	public void resetGame() {
@@ -24,12 +35,12 @@ public class StartGameController {
 	public void joinGame() {
 		startGame.message.setText("");
 		mainController.client = new BoggleClient(mainController);
-//		String ipAddress = "65.60.197.125";
-		String ipAddress = "localhost";
+		String ipAddress = startGame.addressField.getText();
 		if (getName().equals("")) {
 			startGame.message.setText("Please enter a name.");
 		} else {
 			if (mainController.client.connect(ipAddress)) {
+				saveServerAddress(ipAddress);
 				mainController.client.start();
 				mainController.client.sendName(getName());
 			} else {
@@ -40,44 +51,5 @@ public class StartGameController {
 
 	public String getName() {
 		return startGame.nameField.getText().replaceAll(" ", "").replaceAll(BoggleServer.CMD_DELIM, "");
-	}
-
-	/*public void initServer() {
-		if (getName().equals("")) {
-			startGame.message.setText("Please enter a name.");
-		} else {
-			if (mainController.server != null) {
-				startGame();
-				return;
-			}
-			mainController.server = new BoggleServer(this);
-			mainController.server.start();
-			startGame.numPlayers.setVisible(true);
-			startGame.ipField.setText(null);
-			joinGame();
-			String address = "unknown";
-			try {
-				address = InetAddress.getLocalHost().getHostAddress();
-			} catch (IOException ignored) {
-
-			}
-			startGame.message.setText("<html>Waiting for others to connect at <b>" + address + "</b><br />Click start again to begin.</html>");
-		}
-
-		startGame.startButton.setEnabled(true);
-	}*/
-
-	/*public void updateNumPlayers(final int playerCount) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				startGame.numPlayers.setText("Number of Players: " + playerCount);
-			}
-		});
-	}*/
-
-	private void startGame() {
-		startGame.message.setText("Starting game...");
-		mainController.server.startGame();
 	}
 }
