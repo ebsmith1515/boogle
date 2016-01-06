@@ -57,6 +57,7 @@ public class MainController {
 			scoreMap.put(scoreSplit[i], Integer.parseInt(scoreSplit[i+1]));
 			lastScoreMap.put(scoreSplit[i], Integer.parseInt(scoreSplit[i+2]));
 		}
+		showCard("ResultsBoard");
 		resultsBoardController.fillScorePanel(scoreMap, lastScoreMap);
 	}
 
@@ -85,5 +86,9 @@ public class MainController {
 		client = null;
 		showCard("StartGame");
 		startGameController.resetGame();
+	}
+
+	public void notAccepting() {
+		startGameController.startGame.message.setText("Not accepting new players");
 	}
 }

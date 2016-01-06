@@ -64,6 +64,8 @@ public class BoggleClient extends Thread {
 					String player = lineSplit[1].split(BoggleServer.CHAT_DELIM)[0];
 					String message = lineSplit[1].split(BoggleServer.CHAT_DELIM)[1];
 					mainController.addChatMessage(player, message);
+				} else if (line.startsWith(NOTACCEPTING.toString())) {
+					mainController.notAccepting();
 				}
 			}
 		} catch (SocketException ex) {
@@ -80,9 +82,6 @@ public class BoggleClient extends Thread {
 	}
 
 	public boolean connect(String serverAddress) {
-		if (serverAddress == null) {
-			serverAddress = "localhost";
-		}
 		boolean success = false;
 		try {
 			socket = new Socket(serverAddress, BoggleServer.PORT);

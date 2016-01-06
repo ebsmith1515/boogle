@@ -23,7 +23,11 @@ public class Player extends Thread {
 	private String playerName;
 	private int score;
 	private int lastScore;
-	private boolean ready;
+	private Status status;
+
+	enum Status {
+		PLAYING, WAITING, READY
+	}
 
 	public Player(int playerNum) {
 		this.playerName = "Player" + playerNum;
@@ -43,7 +47,7 @@ public class Player extends Thread {
 
 	public void nextRound() {
 		enteredWords = null;
-		ready = false;
+		status = Status.PLAYING;
 		lastScore = 0;
 	}
 
@@ -68,7 +72,7 @@ public class Player extends Thread {
 					} else if (line.startsWith(NAME.toString())) {
 						setPlayerName(line.split(CMD_DELIM)[1]);
 					} else if (line.equals(START.toString())) {
-						setReady(true);
+						status = Status.READY;
 						server.checkNextRound();
 					} else if (line.startsWith(CHAT.toString())) {
 						server.addChat(this, line.split(CMD_DELIM, 2)[1]);
@@ -107,6 +111,7 @@ public class Player extends Thread {
 
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
+		server.sendScores();
 	}
 
 	public int getScore() {
@@ -119,12 +124,15 @@ public class Player extends Thread {
 	}
 
 	public boolean isReady() {
-		return ready;
+		return status == Status.READY;
 	}
 
+	public Status getStatus() {
+		return status;
+	}
 
-	public void setReady(boolean ready) {
-		this.ready = ready;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	public int getLastScore() {

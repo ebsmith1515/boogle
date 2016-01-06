@@ -1,3 +1,5 @@
+package server;
+
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import server.BoggleServer;
@@ -22,5 +24,13 @@ public class BoggleServerTest {
 		server.checkEnd();
 		assertEquals(2, server.getResults().getPlayerResults().keySet().size());
 		assertEquals(2, server.getResults().getPlayerResults().get("Player1").size());
+	}
+
+	@Test
+	public void testFirstPlayer() {
+		BoggleServer server = new BoggleServer();
+		Player player1 = new Player(1);
+		server.getPlayers().add(player1);
+		server.sendResults();
 	}
 }

@@ -11,12 +11,8 @@ public class StartGame extends JPanel {
 
 	private StartGameController startGameController;
 
-	JButton startButton;
-	JButton joinButton;
-	JTextField ipField;
-	JLabel ipLabel;
+	JButton enterButton;
 	JTextField nameField;
-	JLabel numPlayers;
 	JLabel message;
 	ImageIcon startImage;
 
@@ -28,13 +24,7 @@ public class StartGame extends JPanel {
 	}
 
 	private void initListeners() {
-		startButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				startGameController.initServer();
-			}
-		});
-		joinButton.addActionListener(new ActionListener() {
+		enterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				startGameController.joinGame();
@@ -44,11 +34,7 @@ public class StartGame extends JPanel {
 
 	private void initComponents() {
 		setLayout(new MigLayout("fillx"));
-		startButton = new JButton("Start Server");
-		joinButton = new JButton("Join Game");
-		ipField = new JTextField();
-		numPlayers = new JLabel();
-		numPlayers.setVisible(false);
+		enterButton = new JButton("Enter");
 		message = new JLabel();
 		nameField = new JTextField();
 		startImage = new ImageIcon(this.getClass().getResource("boogleImage.jpg"));
@@ -57,14 +43,9 @@ public class StartGame extends JPanel {
 
 	private void initLayout() {
 		add(new JLabel("", startImage, JLabel.CENTER), "span, center, wrap");
-		add(startButton, "split, span");
-		add(joinButton, "wrap");
+		add(enterButton, "span, wrap");
 		add(new JLabel("Enter name (no spaces):"));
 		add(nameField, "wrap, growx");
-		ipLabel = new JLabel("IP to join (hover for help)");
-		add(ipLabel);
-		add(ipField, "wrap, growx");
-		add(numPlayers, "span, wrap");
 		add(message, "span");
 		//message.setPreferredSize(new Dimension(600, 600));
 	}

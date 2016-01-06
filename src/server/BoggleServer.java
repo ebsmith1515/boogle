@@ -6,8 +6,6 @@ import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.*;
 
-import ui.StartGameController;
-
 public class BoggleServer extends Thread {
 
 	public static final int PORT = 9191;
@@ -19,13 +17,17 @@ public class BoggleServer extends Thread {
 
 	private ServerSocket listener;
 	private List<Player> players;
-	protected StartGameController startGameController;
 	private Results results;
 	private String gameLetters;
 	private WordChecker wordChecker;
 	private HashMap<Integer, List<String>> wordsOnBoard;
 	private int wordsOnBoardCount;
 	private boolean running;
+
+	public static void main(String[] args) {
+		BoggleServer server = new BoggleServer();
+		server.newGame();
+	}
 
 	public void checkNextRound() {
 		boolean allReady = true;
@@ -50,15 +52,11 @@ public class BoggleServer extends Thread {
 	}
 
 	public enum Commands {
-		START,WORDS,NAME,RESULTS,SCORES,CHAT,ALLWORDS
+		START,WORDS,NAME,RESULTS,SCORES,CHAT,ALLWORDS,NOTACCEPTING
 	}
 
 	public BoggleServer() {
-
-	}
-
-	public BoggleServer(StartGameController startGameController) {
-		this.startGameController = startGameController;
+		players = new ArrayList<Player>();
 	}
 
 	@Override
@@ -85,11 +83,15 @@ public class BoggleServer extends Thread {
 		try {
 			listener = new ServerSocket(PORT, 0, new InetSocketAddress("0.0.0.0", PORT).getAddress());
 			int playerNum = 1;
-			while (waitingForPlayers) {
+			while (true) {
 				Player player = new Player(listener.accept(), this, playerNum++);
-				player.start();
-				addPlayer(player);
-				System.out.println("Adding new player");
+				if (waitingForPlayers) {
+					addPlayer(player);
+					player.start();
+					System.out.println("Adding new player");
+				} else {
+					player.send(Commands.NOTACCEPTING.toString());
+				}
 			}
 		} catch (SocketException ex) {
 			System.out.println("Socket closed");
@@ -153,7 +155,7 @@ public class BoggleServer extends Thread {
 
 	public void addPlayer(Player player) {
 		players.add(player);
-		startGameController.updateNumPlayers(players.size());
+		sendScores();
 	}
 
 	public List<Player> getPlayers() {
@@ -161,6 +163,7 @@ public class BoggleServer extends Thread {
 	}
 
 	public void startGame() {
+		waitingForPlayers = false;
 		boolean good = false;
 		while (!good) {
 			System.out.println("Getting letters");
@@ -224,6 +227,7 @@ public class BoggleServer extends Thread {
 		}
 		if (allDone && !sentResults) {
 			System.out.println("All done, sending results");
+			waitingForPlayers = true;
 			sentResults = true;
 			results = new Results(players);
 			for (Player player : players) {
@@ -268,8 +272,12 @@ public class BoggleServer extends Thread {
 		}
 	}
 
-	private void sendResults() {
-		results.processResults(gameLetters);
+	protected void sendResults() {
+		if (results == null) {
+			results = new Results(players);
+		} else {
+			results.processResults(gameLetters);
+		}
 		broadcast(Commands.RESULTS + CMD_DELIM + results.serialize());
 	}
 

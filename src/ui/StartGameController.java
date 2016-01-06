@@ -1,11 +1,9 @@
 package ui;
 
 import client.BoggleClient;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.prefs.Preferences;
-import javax.swing.SwingUtilities;
 import server.BoggleServer;
+
+import java.util.prefs.Preferences;
 
 public class StartGameController {
 
@@ -16,13 +14,6 @@ public class StartGameController {
 	public StartGameController(MainController mainController) {
 		startGame = new StartGame(this);
 		this.mainController = mainController;
-		String lastUsed = getLastUsedIP();
-		String tooltip = "Get this from the user that is starting the server. Something like '192.123.4.56'. Not needed if you are starting the server.";
-		startGame.ipField.setToolTipText(tooltip);
-		startGame.ipLabel.setToolTipText(tooltip);
-		if (lastUsed != null) {
-			startGame.ipField.setText(lastUsed);
-		}
 	}
 
 	private String getLastUsedIP() {
@@ -35,28 +26,18 @@ public class StartGameController {
 
 	public void resetGame() {
 		startGame.message.setText("");
-		startGame.joinButton.setEnabled(true);
-		startGame.startButton.setEnabled(true);
-		startGame.numPlayers.setText("");
+		startGame.enterButton.setEnabled(true);
 	}
 
 	public void joinGame() {
 		startGame.message.setText("");
 		mainController.client = new BoggleClient(mainController);
-		String ipAddress = null;
-		if (!startGame.ipField.getText().isEmpty()) {
-			ipAddress = startGame.ipField.getText();
-		}
-
+//		String ipAddress = "65.60.197.125";
+		String ipAddress = "localhost";
 		if (getName().equals("")) {
 			startGame.message.setText("Please enter a name.");
 		} else {
 			if (mainController.client.connect(ipAddress)) {
-				if (ipAddress != null) {
-					saveIP(ipAddress);
-				}
-				startGame.joinButton.setEnabled(false);
-				startGame.startButton.setEnabled(false);
 				mainController.client.start();
 				mainController.client.sendName(getName());
 			} else {
@@ -69,7 +50,7 @@ public class StartGameController {
 		return startGame.nameField.getText().replaceAll(" ", "").replaceAll(BoggleServer.CMD_DELIM, "");
 	}
 
-	public void initServer() {
+	/*public void initServer() {
 		if (getName().equals("")) {
 			startGame.message.setText("Please enter a name.");
 		} else {
@@ -92,16 +73,16 @@ public class StartGameController {
 		}
 
 		startGame.startButton.setEnabled(true);
-	}
+	}*/
 
-	public void updateNumPlayers(final int playerCount) {
+	/*public void updateNumPlayers(final int playerCount) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				startGame.numPlayers.setText("Number of Players: " + playerCount);
 			}
 		});
-	}
+	}*/
 
 	private void startGame() {
 		startGame.message.setText("Starting game...");
