@@ -7,6 +7,7 @@ import java.util.Map;
 public class ResultsBoardController {
 	MainController mainController;
 	ResultsBoard resultsBoard;
+	boolean firstGame = true;
 
 	public ResultsBoardController(final MainController mainController) {
 		this.mainController = mainController;
@@ -23,6 +24,11 @@ public class ResultsBoardController {
 		resultsBoard.getPlayerWordsScroll().setToolTipText("<html>Words surrounded by hyphens are cancelled due to another player" +
 				"<br />getting the same word. Invalid words are shown at the bottom. Words that are not in the dictionary are worth" +
 				"<br />-1 point.</html>");
+	}
+
+	public void showOrHideThings() {
+		resultsBoard.playerWordsScroll.setVisible(!firstGame);
+		resultsBoard.letterGrid.setVisible(!firstGame);
 	}
 
 	protected void setLetters(String letters) {
@@ -51,6 +57,8 @@ public class ResultsBoardController {
 	}
 
 	public void resetButtonPressed() {
+		resultsBoard.nextRoundButton.setEnabled(true);
+		firstGame = true;
 		mainController.reset();
 	}
 }

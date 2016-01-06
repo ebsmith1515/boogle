@@ -16,14 +16,6 @@ public class StartGameController {
 		this.mainController = mainController;
 	}
 
-	private String getLastUsedIP() {
-		return Preferences.userNodeForPackage(this.getClass()).get("ip", null);
-	}
-
-	private void saveIP(String ip) {
-		Preferences.userNodeForPackage(this.getClass()).put("ip", ip);
-	}
-
 	public void resetGame() {
 		startGame.message.setText("");
 		startGame.enterButton.setEnabled(true);
@@ -33,7 +25,7 @@ public class StartGameController {
 		startGame.message.setText("");
 		mainController.client = new BoggleClient(mainController);
 //		String ipAddress = "65.60.197.125";
-		String ipAddress = "localhost";
+		String ipAddress = "192.168.1.102";
 		if (getName().equals("")) {
 			startGame.message.setText("Please enter a name.");
 		} else {

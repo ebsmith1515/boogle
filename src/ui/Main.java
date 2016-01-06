@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 public class Main {
 
     public static void main(String[] args) {
+		//http://stackoverflow.com/questions/2061194/swing-on-osx-how-to-trap-command-q
+		System.setProperty("apple.eawt.quitStrategy", "CLOSE_ALL_WINDOWS");
         JFrame frame = new JFrame();
 		frame.setSize(800, 600);
 		final MainController mainController = new MainController();
@@ -19,6 +21,7 @@ public class Main {
 			public void windowClosing(WindowEvent e) {
 				super.windowClosing(e);
 				mainController.windowClosing();
+				System.exit(0);
 			}
 		});
 		mainController.finalInitUI();

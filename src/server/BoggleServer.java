@@ -52,7 +52,7 @@ public class BoggleServer extends Thread {
 	}
 
 	public enum Commands {
-		START,WORDS,NAME,RESULTS,SCORES,CHAT,ALLWORDS,NOTACCEPTING
+		START,WORDS,NAME,RESULTS,SCORES,CHAT,ALLWORDS,NOTACCEPTING,END
 	}
 
 	public BoggleServer() {
@@ -156,6 +156,16 @@ public class BoggleServer extends Thread {
 	public void addPlayer(Player player) {
 		players.add(player);
 		sendScores();
+	}
+
+	public void removePlayer(Player player) {
+		players.remove(player);
+		if (players.isEmpty()) {
+			waitingForPlayers = true;
+		}
+		if (waitingForPlayers) {
+			sendScores();
+		}
 	}
 
 	public List<Player> getPlayers() {

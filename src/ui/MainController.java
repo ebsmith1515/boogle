@@ -26,7 +26,8 @@ public class MainController {
 	}
 
 	public void showResults(Results results) {
-		showCard("ResultsBoard");
+		resultsBoardController.firstGame = false;
+		showResults();
 		resultsBoardController.resultsBoard.fillTable(results);
 	}
 
@@ -42,6 +43,9 @@ public class MainController {
 	}
 
 	public void windowClosing() {
+		if (client != null) {
+			client.stopBoggle();
+		}
 		System.exit(0);
 	}
 
@@ -57,8 +61,13 @@ public class MainController {
 			scoreMap.put(scoreSplit[i], Integer.parseInt(scoreSplit[i+1]));
 			lastScoreMap.put(scoreSplit[i], Integer.parseInt(scoreSplit[i+2]));
 		}
-		showCard("ResultsBoard");
+		showResults();
 		resultsBoardController.fillScorePanel(scoreMap, lastScoreMap);
+	}
+
+	void showResults() {
+		showCard("ResultsBoard");
+		resultsBoardController.showOrHideThings();
 	}
 
 	public void showAllWords(String[] allWords) {

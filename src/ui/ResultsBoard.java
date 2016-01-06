@@ -13,7 +13,7 @@ import java.util.Map;
 public class ResultsBoard extends JPanel {
 
 	private JPanel scorePanel;
-	private JScrollPane playerWordsScroll;
+	protected JScrollPane playerWordsScroll;
 	private JList<String> allWordsList;
 	protected LetterGrid letterGrid;
 	protected JButton nextRoundButton;
@@ -24,7 +24,7 @@ public class ResultsBoard extends JPanel {
 	public ResultsBoard(final ResultsBoardController controller) {
 		resetButton = new JButton("Reset");
 		letterGrid = new LetterGrid();
-		nextRoundButton = new JButton("Next Round");
+		nextRoundButton = new JButton("Ready");
 		chatTextField = new JTextField();
 		chatArea = new JTextArea();
 		chatArea.setEditable(false);

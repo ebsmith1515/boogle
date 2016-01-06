@@ -60,8 +60,9 @@ public class Player extends Thread {
 	@Override
 	public void run() {
 		System.out.println("Starting player thread.");
+		boolean done = false;
 		try {
-			while (server.isRunning()) {
+			while (!done && server.isRunning()) {
 				String line = input.readLine();
 				if (line != null) {
 					if (line.startsWith("PING")) {
@@ -76,6 +77,8 @@ public class Player extends Thread {
 						server.checkNextRound();
 					} else if (line.startsWith(CHAT.toString())) {
 						server.addChat(this, line.split(CMD_DELIM, 2)[1]);
+					} else if (line.startsWith(END.toString())) {
+						done = true;
 					}
 				}
 			}
@@ -86,6 +89,7 @@ public class Player extends Thread {
 		} finally {
 			try {
 				socket.close();
+				server.removePlayer(this);
 			} catch (IOException ignored) {
 			}
 		}
