@@ -31,6 +31,8 @@ public class ResultsBoardController {
 		resultsBoard.letterGrid.setVisible(!firstGame);
 		resultsBoard.allWorldsListScroll.setVisible(!firstGame);
 		resultsBoard.missedWordsLabel.setVisible(!firstGame);
+		resultsBoard.validate();
+		resultsBoard.repaint();
 	}
 
 	protected void setLetters(String letters) {
