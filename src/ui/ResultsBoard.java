@@ -100,12 +100,12 @@ public class ResultsBoard extends JPanel {
 	protected void fillScorePanel(Map<String, Integer> scores, Map<String, Integer> lastScores) {
 		scorePanel.removeAll();
 		scorePanel.add(new JLabel("Player"));
-		scorePanel.add(new JLabel("Last Score"));
+		scorePanel.add(new JLabel("This Round"));
 		scorePanel.add(new JLabel("Total Score"), "wrap");
 		for (String playerName : scores.keySet()) {
 			scorePanel.add(new JLabel(playerName + ":"));
-			scorePanel.add(new JLabel(scores.get(playerName).toString()));
-			scorePanel.add(new JLabel(lastScores.get(playerName).toString()), "wrap");
+			scorePanel.add(new JLabel(lastScores.get(playerName).toString()));
+			scorePanel.add(new JLabel(scores.get(playerName).toString()), "wrap");
 		}
 		validate();
 		repaint();
