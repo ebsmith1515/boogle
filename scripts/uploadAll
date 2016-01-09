@@ -1,0 +1,3 @@
+scp ../out/artifacts/Boggle/Boogle.jar pi@65.60.197.125:/home/pi/BoogleServer/Boogle.jar
+scp ../out/artifacts/Boggle/Boogle.jar pi@65.60.197.125:/home/pi/nodeServer/homepage/public/Boogle.jar
+
