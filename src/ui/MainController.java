@@ -67,7 +67,7 @@ public class MainController {
 
 	void showResults() {
 		showCard("ResultsBoard");
-		resultsBoardController.showOrHideThings();
+		resultsBoardController.showResults();
 	}
 
 	public void showAllWords(String[] allWords) {

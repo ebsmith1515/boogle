@@ -1,5 +1,7 @@
 package server;
 
+import ui.Main;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -71,7 +73,14 @@ public class Player extends Thread {
 						handleWords(line);
 						server.checkEnd();
 					} else if (line.startsWith(NAME.toString())) {
-						setPlayerName(line.split(CMD_DELIM)[1]);
+						String[] nameVersion = line.split(CMD_DELIM);
+						if (nameVersion.length == 3) {
+							setVersion(nameVersion[2]);
+						} else {
+							//pre version check client
+							setVersion("0");
+						}
+						setPlayerName(nameVersion[1]);
 					} else if (line.equals(START.toString())) {
 						status = Status.READY;
 						server.checkNextRound();
@@ -116,6 +125,25 @@ public class Player extends Thread {
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
 		server.sendScores();
+	}
+
+	protected void setVersion(String versionStr) {
+		boolean goodVersion = false;
+		try {
+			int version = Integer.parseInt(versionStr);
+			if (version == Main.CLIENT_VERSION) {
+				goodVersion = true;
+			}
+		} catch (NumberFormatException ex) {
+			System.out.println(ex.getMessage());
+			ex.printStackTrace();
+		}
+		if (goodVersion) {
+			sendChat(BoggleServer.THE_SERVER_NAME, "Welcome!");
+		} else {
+			sendChat(BoggleServer.THE_SERVER_NAME, "A new version of Boogle is ready to download " +
+					"at booglegame.com! This version may not work properly.");
+		}
 	}
 
 	public int getScore() {

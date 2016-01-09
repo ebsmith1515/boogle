@@ -13,6 +13,7 @@ import static server.BoggleServer.CMD_DELIM;
 import static server.BoggleServer.Commands.*;
 
 import server.Results;
+import ui.Main;
 import ui.MainController;
 
 public class BoggleClient extends Thread {
@@ -120,7 +121,7 @@ public class BoggleClient extends Thread {
 	}
 
 	public void sendName(String name) {
-		out.println(BoggleServer.Commands.NAME.toString() + CMD_DELIM + name);
+		out.println(BoggleServer.Commands.NAME.toString() + CMD_DELIM + name + CMD_DELIM + Main.CLIENT_VERSION);
 	}
 
 	public void nextRound() {

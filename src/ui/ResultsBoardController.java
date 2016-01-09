@@ -26,7 +26,7 @@ public class ResultsBoardController {
 				"<br />-1 point.</html>");
 	}
 
-	public void showOrHideThings() {
+	public void showResults() {
 		resultsBoard.playerWordsScroll.setVisible(!firstGame);
 		resultsBoard.letterGrid.setVisible(!firstGame);
 		resultsBoard.allWorldsListScroll.setVisible(!firstGame);
@@ -63,6 +63,7 @@ public class ResultsBoardController {
 	public void resetButtonPressed() {
 		resultsBoard.nextRoundButton.setEnabled(true);
 		firstGame = true;
+		resultsBoard.chatArea.setText("");
 		mainController.reset();
 	}
 }

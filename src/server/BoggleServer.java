@@ -11,6 +11,7 @@ public class BoggleServer extends Thread {
 	public static final int PORT = 9191;
 	private static final int GAME_SECONDS = 120;
 	private static final int MIN_WORDS_ON_BOARD = 50;
+	protected static final String THE_SERVER_NAME = "<The Server>";
 	boolean waitingForPlayers = true;
 	public static final String CMD_DELIM = " ";
 	public static final String CHAT_DELIM = "%%";
@@ -133,7 +134,7 @@ public class BoggleServer extends Thread {
 		repeatingTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {
-				addChat("<The Server>", "Starting game: " + secondsLeft + "...");
+				addChat(THE_SERVER_NAME, "Starting game: " + secondsLeft + "...");
 				secondsLeft--;
 				if (secondsLeft < 0) {
 					repeatingTimer.cancel();
