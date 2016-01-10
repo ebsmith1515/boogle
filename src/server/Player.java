@@ -1,5 +1,6 @@
 package server;
 
+import org.apache.log4j.Logger;
 import ui.Main;
 
 import java.io.BufferedReader;
@@ -16,6 +17,8 @@ import static server.BoggleServer.CMD_DELIM;
 import static server.BoggleServer.Commands.*;
 
 public class Player extends Thread {
+
+	private final static Logger log = Logger.getLogger(Player.class);
 
 	private Socket socket;
 	private BufferedReader input;
@@ -61,7 +64,7 @@ public class Player extends Thread {
 
 	@Override
 	public void run() {
-		System.out.println("Starting player thread.");
+		log.debug("Starting player thread.");
 		boolean done = false;
 		try {
 			while (!done && server.isRunning()) {
@@ -92,11 +95,12 @@ public class Player extends Thread {
 				}
 			}
 		} catch (SocketException ex) {
-			System.out.println("socket closed");
+			log.debug("socket closed");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
+				log.debug("socket closed");
 				socket.close();
 				server.removePlayer(this);
 				if (server.waitingForPlayers) {
@@ -127,6 +131,7 @@ public class Player extends Thread {
 
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
+		log.debug("Set playerName=" + playerName);
 		server.sendScores();
 	}
 
@@ -138,8 +143,7 @@ public class Player extends Thread {
 				goodVersion = true;
 			}
 		} catch (NumberFormatException ex) {
-			System.out.println(ex.getMessage());
-			ex.printStackTrace();
+			log.error(ex.getMessage(), ex);
 		}
 		if (goodVersion) {
 			sendChat(BoggleServer.THE_SERVER_NAME, "Welcome!");
@@ -182,7 +186,7 @@ public class Player extends Thread {
 		try {
 			socket.close();
 		} catch (IOException e) {
-			System.out.println("error closing socket.");
+			log.error("error closing socket.", e);
 		}
 	}
 }

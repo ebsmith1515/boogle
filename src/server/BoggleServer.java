@@ -5,8 +5,11 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.*;
+import org.apache.log4j.Logger;
 
 public class BoggleServer extends Thread {
+
+	private static final Logger	log = Logger.getLogger(BoggleServer.class);
 
 	public static final int PORT = 9191;
 	private static final int GAME_SECONDS = 120;
@@ -32,7 +35,7 @@ public class BoggleServer extends Thread {
 		3. CHECK AGAIN Total score should be allowed to be negative.
 		4. DONE Reset should say something else. Back.
 		5. Tooltip to describe scoring
-		6. Duplicates should not just use hyphens.
+		6. DONE Duplicates should not just use hyphens.
 		7. Pre-generate the board.
 		8. Messing up when someone is in waiting room for a while.
 		9. Keep alive
@@ -106,15 +109,15 @@ public class BoggleServer extends Thread {
 				if (waitingForPlayers) {
 					addPlayer(player);
 					player.start();
-					System.out.println("Adding new player");
+					log.debug("Adding new player");
 				} else {
 					player.send(Commands.NOTACCEPTING.toString());
 				}
 			}
 		} catch (SocketException ex) {
-			System.out.println("Socket closed");
+			log.debug("Socket closed");
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 	}
 
@@ -195,12 +198,12 @@ public class BoggleServer extends Thread {
 			waitingForPlayers = false;
 			boolean good = false;
 			while (!good) {
-				System.out.println("Getting letters");
+				log.debug("Getting letters");
 				gameLetters = new LetterFactory().getLetterList();
 				wordChecker = new WordChecker(gameLetters);
 				findAllWordsThread();
 				good = wordsOnBoardCount > MIN_WORDS_ON_BOARD;
-				System.out.println("Found " + wordsOnBoardCount + "words");
+				log.debug("Found " + wordsOnBoardCount + "words");
 			}
 
 			int gameSeconds = GAME_SECONDS;
@@ -230,7 +233,7 @@ public class BoggleServer extends Thread {
 		}
 
 		long seconds = (System.currentTimeMillis() - startTime) / 1000;
-		System.out.println("Ran findAllWords in " + seconds + " seconds.");
+		log.debug("Ran findAllWords in " + seconds + " seconds.");
 	}
 
 	private void putInWordsOnBoard(int num, String word) {
@@ -256,7 +259,7 @@ public class BoggleServer extends Thread {
 			}
 		}
 		if (allDone && !sentResults) {
-			System.out.println("All done, sending results");
+			log.debug("All done, sending results");
 			waitingForPlayers = true;
 			sentResults = true;
 			results = new Results(players);

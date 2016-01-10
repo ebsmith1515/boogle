@@ -1,5 +1,7 @@
 package server;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +13,7 @@ import java.util.TreeMap;
 
 public class Results {
 
+	private final static Logger log = Logger.getLogger(Results.class);
 
 	private Map<String, List<Result>> playerResults;
 	public static final String RESULTS_DELIM = "%%";
@@ -54,10 +57,10 @@ public class Results {
 			for (Result result : playerWords) {
 				if (!wordList.checkWord(result.word)) {
 					result.invalidDictionary = true;
-					System.out.println(result.word + " not in list");
+					log.debug(result.word + " not in list");
 				} else {
 					if (!wordChecker.checkWord(result.word)) {
-						System.out.println(result.word + " not on board");
+						log.debug(result.word + " not on board");
 						result.invalidBoard = true;
 					}
 				}
@@ -70,7 +73,7 @@ public class Results {
 		try {
 			checkDictionary(checker);
 		} catch (IOException ex) {
-			System.out.println("Error checking dictionary. Not checking.");
+			log.debug("Error checking dictionary. Not checking.");
 			ex.printStackTrace();
 		}
 
