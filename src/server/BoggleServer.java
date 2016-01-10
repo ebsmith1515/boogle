@@ -13,7 +13,6 @@ public class BoggleServer extends Thread {
 
 	public static final int PORT = 9191;
 	private static final int GAME_SECONDS = 120;
-	private static final int MIN_WORDS_ON_BOARD = 50;
 	protected static final String THE_SERVER_NAME = "<The Server>";
 	boolean waitingForPlayers = true;
 	public static final String CMD_DELIM = " ";
@@ -22,11 +21,8 @@ public class BoggleServer extends Thread {
 	private ServerSocket listener;
 	private List<Player> players;
 	private Results results;
-	private String gameLetters;
-	private WordChecker wordChecker;
-	private HashMap<Integer, List<String>> wordsOnBoard;
-	private int wordsOnBoardCount;
 	private boolean running;
+	private BoardGenerator boardGenerator;
 
 	//TODO:
 	/*
@@ -78,6 +74,7 @@ public class BoggleServer extends Thread {
 
 	public BoggleServer() {
 		players = new ArrayList<Player>();
+		boardGenerator = new BoardGenerator();
 	}
 
 	@Override
@@ -123,12 +120,12 @@ public class BoggleServer extends Thread {
 
 	private void sendAllWords() {
 		String wordsString = Commands.ALLWORDS.toString();
-		List<Integer> sortedNumList = new ArrayList<Integer>(wordsOnBoard.keySet());
+		List<Integer> sortedNumList = new ArrayList<Integer>(boardGenerator.wordsOnBoard.keySet());
 		Collections.sort(sortedNumList);
 		Collections.reverse(sortedNumList);
 
 		for (int len : sortedNumList) {
-			List<String> wordList = wordsOnBoard.get(len);
+			List<String> wordList = boardGenerator.wordsOnBoard.get(len);
 			for (String word : wordList) {
 				wordsString += CMD_DELIM + word;
 			}
@@ -149,6 +146,8 @@ public class BoggleServer extends Thread {
 	private int secondsLeft;
 	public void nextRound() {
 		secondsLeft = 5;
+
+		new Thread(boardGenerator).start();
 
 		final Timer repeatingTimer = new Timer();
 		repeatingTimer.scheduleAtFixedRate(new TimerTask() {
@@ -196,51 +195,20 @@ public class BoggleServer extends Thread {
 	public void startGame() {
 		if (!players.isEmpty()) {
 			waitingForPlayers = false;
-			boolean good = false;
-			while (!good) {
-				log.debug("Getting letters");
-				gameLetters = new LetterFactory().getLetterList();
-				wordChecker = new WordChecker(gameLetters);
-				findAllWordsThread();
-				good = wordsOnBoardCount > MIN_WORDS_ON_BOARD;
-				log.debug("Found " + wordsOnBoardCount + "words");
-			}
 
 			int gameSeconds = GAME_SECONDS;
 			if (players.get(0).getPlayerName().startsWith("_SHORT")) {
 				gameSeconds = Integer.parseInt(players.get(0).getPlayerName().substring(6));
 			}
-
-			broadcast(Commands.START.toString() + CMD_DELIM + gameSeconds + CMD_DELIM + gameLetters);
-		}
-	}
-
-	//TODO: option for min words on UI
-	private void findAllWordsThread() {
-		wordsOnBoardCount = 0;
-		long startTime = System.currentTimeMillis();
-		wordsOnBoard = new HashMap<Integer, List<String>>();
-		try {
-			WordList wordList = WordList.getInstance();
-			for (String word : wordList.dictionary.keySet()) {
-				if (word.length() > 2 && wordChecker.checkWord(word)) {
-					putInWordsOnBoard(word.length(), word);
-					wordsOnBoardCount++;
+			while (!boardGenerator.done) {
+				try {
+					Thread.sleep(300);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+			broadcast(Commands.START.toString() + CMD_DELIM + gameSeconds + CMD_DELIM + boardGenerator.gameLetters);
 		}
-
-		long seconds = (System.currentTimeMillis() - startTime) / 1000;
-		log.debug("Ran findAllWords in " + seconds + " seconds.");
-	}
-
-	private void putInWordsOnBoard(int num, String word) {
-		if (!wordsOnBoard.containsKey(num)) {
-			wordsOnBoard.put(num, new ArrayList<String>());
-		}
-		wordsOnBoard.get(num).add(word);
 	}
 
 	public void broadcast(String message) {
@@ -277,7 +245,7 @@ public class BoggleServer extends Thread {
 	}
 
 	private void removeFromWordsOnBoard(String word) {
-		for (List<String> wordList : wordsOnBoard.values()) {
+		for (List<String> wordList : boardGenerator.wordsOnBoard.values()) {
 			wordList.remove(word);
 		}
 	}
@@ -309,7 +277,7 @@ public class BoggleServer extends Thread {
 		if (results == null) {
 			results = new Results(players);
 		} else {
-			results.processResults(gameLetters);
+			results.processResults(boardGenerator.gameLetters);
 		}
 		broadcast(Commands.RESULTS + CMD_DELIM + results.serialize());
 	}
