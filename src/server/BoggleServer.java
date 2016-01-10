@@ -25,6 +25,22 @@ public class BoggleServer extends Thread {
 	private int wordsOnBoardCount;
 	private boolean running;
 
+	//TODO:
+	/*
+		1. Bug where one player leaves after all others have clicked ready.
+		2. Words table needs to fill the whole space.
+		3. Total score should be allowed to be negative.
+		4. Reset should say something else. Back.
+		5. Tooltip to describe scoring
+		6. Duplicates should not just use hyphens.
+		7. Pre-generate the board.
+		8. Messing up when someone is in waiting room for a while.
+
+		Nice to have:
+		1. Notify all players when one player gets a long word.
+		2.
+	 */
+
 	public static void main(String[] args) {
 		BoggleServer server = new BoggleServer();
 		server.newGame();
