@@ -99,6 +99,9 @@ public class Player extends Thread {
 			try {
 				socket.close();
 				server.removePlayer(this);
+				if (server.waitingForPlayers) {
+					server.checkNextRound();
+				}
 			} catch (IOException ignored) {
 			}
 		}

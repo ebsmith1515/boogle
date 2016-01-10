@@ -81,11 +81,10 @@ public class ResultsBoard extends JPanel {
 		}
 		setLayout(new MigLayout("fillx, hidemode 3"));
 		playerWordsScroll = new JScrollPane();
-		playerWordsScroll.setSize(300, 300);
 		add(letterGrid);
 		add(missedWordsLabel = new JLabel("Missed words"), "split, flowy, spany");
 		add(allWorldsListScroll, "wrap, growy");
-		add(playerWordsScroll, "wrap");
+		add(playerWordsScroll, "wrap, growx");
 		add(scorePanel, "wrap");
 		add(nextRoundButton, "split");
 		add(resetButton, "wrap");

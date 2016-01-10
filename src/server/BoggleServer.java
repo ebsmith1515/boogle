@@ -27,14 +27,15 @@ public class BoggleServer extends Thread {
 
 	//TODO:
 	/*
-		1. Bug where one player leaves after all others have clicked ready.
-		2. Words table needs to fill the whole space.
+		1. DONE Bug where one player leaves after all others have clicked ready.
+		2. DONE Words table needs to fill the whole space.
 		3. Total score should be allowed to be negative.
 		4. Reset should say something else. Back.
 		5. Tooltip to describe scoring
 		6. Duplicates should not just use hyphens.
 		7. Pre-generate the board.
 		8. Messing up when someone is in waiting room for a while.
+		9. Keep alive
 
 		Nice to have:
 		1. Notify all players when one player gets a long word.
