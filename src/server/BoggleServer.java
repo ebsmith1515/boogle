@@ -29,8 +29,8 @@ public class BoggleServer extends Thread {
 	/*
 		1. DONE Bug where one player leaves after all others have clicked ready.
 		2. DONE Words table needs to fill the whole space.
-		3. Total score should be allowed to be negative.
-		4. Reset should say something else. Back.
+		3. CHECK AGAIN Total score should be allowed to be negative.
+		4. DONE Reset should say something else. Back.
 		5. Tooltip to describe scoring
 		6. Duplicates should not just use hyphens.
 		7. Pre-generate the board.

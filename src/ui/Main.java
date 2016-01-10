@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 
 public class Main {
 
-	public static final int CLIENT_VERSION = 1;
+	public static final int CLIENT_VERSION = 2;
 
     public static void main(String[] args) {
 		//http://stackoverflow.com/questions/2061194/swing-on-osx-how-to-trap-command-q

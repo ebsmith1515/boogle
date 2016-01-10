@@ -21,10 +21,10 @@ public class ResultsBoard extends JPanel {
 	protected JButton nextRoundButton;
 	protected JTextField chatTextField;
 	protected JTextArea chatArea;
-	private JButton resetButton;
+	private JButton leaveGameButton;
 
 	public ResultsBoard(final ResultsBoardController controller) {
-		resetButton = new JButton("Reset");
+		leaveGameButton = new JButton("Leave Game");
 		letterGrid = new LetterGrid();
 		nextRoundButton = new JButton("Ready");
 		chatTextField = new JTextField();
@@ -38,7 +38,7 @@ public class ResultsBoard extends JPanel {
 				controller.nextRoundButtonPressed();
 			}
 		});
-		resetButton.addActionListener(new ActionListener() {
+		leaveGameButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.resetButtonPressed();
@@ -87,7 +87,7 @@ public class ResultsBoard extends JPanel {
 		add(playerWordsScroll, "wrap, growx");
 		add(scorePanel, "wrap");
 		add(nextRoundButton, "split");
-		add(resetButton, "wrap");
+		add(leaveGameButton, "wrap");
 		add(chatTextField, "growx, wrap");
 		add(new JScrollPane(chatArea), "growx, hmin 100");
 	}
