@@ -133,8 +133,8 @@ public class Player extends Thread {
 	protected void setVersion(String versionStr) {
 		boolean goodVersion = false;
 		try {
-			int version = Integer.parseInt(versionStr);
-			if (version == Main.CLIENT_VERSION) {
+			int versionFromClient = Integer.parseInt(versionStr);
+			if (versionFromClient >= Main.VERSION) {
 				goodVersion = true;
 			}
 		} catch (NumberFormatException ex) {

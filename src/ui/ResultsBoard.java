@@ -58,7 +58,7 @@ public class ResultsBoard extends JPanel {
 				if (result.isInvalid()) {
 					resultWord = resultWord + " (invalid)";
 				} else if (result.isCancelled()) {
-					resultWord = "-" + resultWord + "-";
+					resultWord = resultWord + " (duplicated)";
 				}
 				resultTableModel[resultIndex][colIndex] = resultWord;
 				resultIndex++;
