@@ -95,12 +95,12 @@ public class Player extends Thread {
 				}
 			}
 		} catch (SocketException ex) {
-			log.debug("socket closed");
+			ex.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				log.debug("socket closed");
+				log.debug("socket closed for " + playerName);
 				socket.close();
 				server.removePlayer(this);
 				if (server.waitingForPlayers) {

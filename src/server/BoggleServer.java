@@ -53,7 +53,7 @@ public class BoggleServer extends Thread {
 				allReady = false;
 			}
 		}
-		if (allReady) {
+		if (allReady && !players.isEmpty()) {
 			nextRound();
 		}
 	}
