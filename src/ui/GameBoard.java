@@ -15,6 +15,7 @@ public class GameBoard extends JPanel {
 	protected JScrollPane enteredWordsScroll;
 	protected JLabel timer;
 	protected JLabel message;
+	protected JButton undoButton;
 
 	public GameBoard(GameBoardController gameBoardController) {
 		this.gameBoardController = gameBoardController;
@@ -30,14 +31,16 @@ public class GameBoard extends JPanel {
 		letterGrid = new LetterGrid();
 		timer = new JLabel();
 		message = new JLabel();
+		undoButton = new JButton("Undo (Spacebar)");
 	}
 
 	private void initLayouts() {
 		setLayout(new MigLayout("fill"));
-		add(timer, "split4, center, flowy");
+		add(timer, "split5, center, flowy");
 		add(letterGrid, "center");
 		add(message, "center");
 		add(wordEnter, "center, wmin 200");
+		add(undoButton, "center");
 		add(enteredWordsScroll = new JScrollPane(enteredWordsArea), "growx, wrap");
 	}
 }

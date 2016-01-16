@@ -1,7 +1,11 @@
 package ui;
 
+import com.sun.deploy.util.StringUtils;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +28,15 @@ public class GameBoardController {
 	}
 
 	private void addListeners() {
+		gameBoard.wordEnter.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyChar() == ' ') {
+					gameBoard.undoButton.doClick();
+					e.consume();
+				}
+			}
+		});
 		gameBoard.wordEnter.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -42,6 +55,18 @@ public class GameBoardController {
 					setEnteredWordsText();
 				}
 				gameBoard.wordEnter.setText("");
+			}
+		});
+		gameBoard.undoButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (enteredWords.size() > 0) {
+					String word = enteredWords.get(enteredWords.size() - 1);
+					enteredWords.remove(enteredWords.size() - 1);
+					setEnteredWordsText();
+					gameBoard.message.setText("Removing word: '" + word + "'");
+					gameBoard.wordEnter.requestFocusInWindow();
+				}
 			}
 		});
 	}
