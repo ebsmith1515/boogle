@@ -37,6 +37,7 @@ public class GameBoardController {
 				} else if (!isAllLettersOnBoard(fixedWord)) {
 					gameBoard.message.setText(fixedWord + " is not on the board");
 				} else {
+					gameBoard.message.setText("Entered '" + fixedWord + "'");
 					enteredWords.add(fixedWord);
 					setEnteredWordsText();
 				}
