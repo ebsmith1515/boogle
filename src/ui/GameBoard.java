@@ -34,10 +34,10 @@ public class GameBoard extends JPanel {
 
 	private void initLayouts() {
 		setLayout(new MigLayout("fill"));
-		add(timer, "split3, center, flowy");
+		add(timer, "split4, center, flowy");
 		add(letterGrid, "center");
 		add(message, "center");
+		add(wordEnter, "center, wmin 200");
 		add(enteredWordsScroll = new JScrollPane(enteredWordsArea), "growx, wrap");
-		add(wordEnter, "growx, span");
 	}
 }
