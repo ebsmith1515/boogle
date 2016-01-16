@@ -1,17 +1,12 @@
 package ui;
 
-import com.sun.deploy.util.StringUtils;
-
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.Timer;
-import java.util.TimerTask;
-import javax.swing.SwingUtilities;
 
 public class GameBoardController {
 
