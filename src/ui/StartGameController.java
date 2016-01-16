@@ -3,6 +3,8 @@ package ui;
 import client.BoggleClient;
 import server.BoggleServer;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.prefs.Preferences;
 
 public class StartGameController {
@@ -43,10 +45,21 @@ public class StartGameController {
 				saveServerAddress(ipAddress);
 				mainController.client.start();
 				mainController.client.sendName(getName());
+				startKeepAliveThread();
 			} else {
 				startGame.message.setText("Connection refused. Try again.");
 			}
 		}
+	}
+
+	protected void startKeepAliveThread() {
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				mainController.client.pingServer();
+			}
+		};
+		new Timer().scheduleAtFixedRate(task, 0, 2000);
 	}
 
 	public String getName() {

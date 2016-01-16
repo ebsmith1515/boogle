@@ -69,7 +69,7 @@ public class BoggleServer extends Thread {
 	}
 
 	public enum Commands {
-		START,WORDS,NAME,RESULTS,SCORES,CHAT,ALLWORDS,NOTACCEPTING,END
+		PING,START,WORDS,NAME,RESULTS,SCORES,CHAT,ALLWORDS,NOTACCEPTING,END
 	}
 
 	public BoggleServer() {
@@ -98,6 +98,7 @@ public class BoggleServer extends Thread {
 		running = true;
 		players = new ArrayList<Player>();
 		results = null;
+		startKeepAliveCheckThread();
 		try {
 			listener = new ServerSocket(PORT, 0, new InetSocketAddress("0.0.0.0", PORT).getAddress());
 			int playerNum = 1;
@@ -116,6 +117,24 @@ public class BoggleServer extends Thread {
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 		}
+	}
+
+	private void startKeepAliveCheckThread() {
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				Player deadPlayer = null;
+				for (Player player : players) {
+					if (System.currentTimeMillis() - player.getLastPingTime() > 10000) {
+						deadPlayer = player;
+					}
+				}
+				if (deadPlayer != null) {
+					removePlayer(deadPlayer);
+				}
+			}
+		};
+		new Timer().scheduleAtFixedRate(task, 0, 10000);
 	}
 
 	private void sendAllWords() {
@@ -179,12 +198,14 @@ public class BoggleServer extends Thread {
 	}
 
 	public void removePlayer(Player player) {
+		log.debug("removing player " + player.getPlayerName());
 		players.remove(player);
 		if (players.isEmpty()) {
 			waitingForPlayers = true;
 		}
 		if (waitingForPlayers) {
 			sendScores();
+			checkNextRound();
 		}
 	}
 

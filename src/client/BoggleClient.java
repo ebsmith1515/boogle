@@ -105,7 +105,7 @@ public class BoggleClient extends Thread {
 	}
 
 	public void pingServer() {
-		out.println("PING");
+		out.println(PING);
 	}
 
 	public void stopBoggle() {

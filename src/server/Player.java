@@ -29,6 +29,7 @@ public class Player extends Thread {
 	private int score;
 	private int lastScore;
 	private Status status;
+	private long lastPingTime;
 
 	enum Status {
 		PLAYING, WAITING, READY
@@ -70,8 +71,8 @@ public class Player extends Thread {
 			while (!done && server.isRunning()) {
 				String line = input.readLine();
 				if (line != null) {
-					if (line.startsWith("PING")) {
-						output.println("WELCOME");
+					if (line.startsWith(PING.toString())) {
+						lastPingTime = System.currentTimeMillis();
 					} else if (line.startsWith(WORDS.toString())) {
 						handleWords(line);
 						server.checkEnd();
@@ -103,12 +104,13 @@ public class Player extends Thread {
 				log.debug("socket closed for " + playerName);
 				socket.close();
 				server.removePlayer(this);
-				if (server.waitingForPlayers) {
-					server.checkNextRound();
-				}
 			} catch (IOException ignored) {
 			}
 		}
+	}
+
+	public long getLastPingTime() {
+		return lastPingTime;
 	}
 
 	public void handleWords(String cmdLine) {
@@ -149,7 +151,7 @@ public class Player extends Thread {
 			sendChat(BoggleServer.THE_SERVER_NAME, "Welcome!");
 		} else {
 			sendChat(BoggleServer.THE_SERVER_NAME, "A new version of Boogle is ready to download " +
-					"at booglegame.com! This version may not work properly.");
+					"at booglegame.com! This version will definitely not work, but you can try for fun if you want.");
 		}
 	}
 
